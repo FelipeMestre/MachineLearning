@@ -16,10 +16,10 @@ training.head()
 testing.head()
 
 def null_table(training, testing):
-    print("---Training---")
+    print("---Training Nulls---")
     print(pd.isnull(training).sum()) 
     print(" ")
-    print("---Testing---")
+    print("---Testing Nulls---")
     print(pd.isnull(testing).sum())
 
 null_table(training, testing)
@@ -28,6 +28,7 @@ copy = training.copy()
 copy.dropna(inplace = True)
 sns.distplot(copy["Age"])
 
+#Substitute Null values
 training.drop(labels = ["Cabin", "Ticket"], axis = 1, inplace = True)
 testing.drop(labels = ["Cabin", "Ticket"], axis = 1, inplace = True)
 
@@ -38,10 +39,20 @@ testing["Fare"].fillna(testing["Fare"].median(), inplace = True)
 
 null_table(training, testing)
 
+print("There are no nulls !!")
+
 sns.barplot(x="Sex", y="Survived", data=training)
 plt.title("Distribution of Survival based on Gender")
 plt.show()
 
+sns.stripplot(x="Survived", y="Age", data=training, jitter=True)
+
+sns.barplot(x="Pclass", y="Survived", data=training)
+plt.ylabel("Survival Rate")
+plt.title("Distribution of Survival Based on Class")
+plt.show()
+
+#Lets make all atributes numerical
 le_sex = LabelEncoder()
 le_sex.fit(training["Sex"])
 
