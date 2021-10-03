@@ -1,0 +1,104 @@
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">UT2_PD3</span> <span style="color: #008000; font-weight: bold">import</span> print_first_rows
+<span style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">math</span> <span style="color: #008000; font-weight: bold">import</span> sqrt
+<span style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">random</span> <span style="color: #008000; font-weight: bold">import</span> randrange
+<span style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">csv</span> <span style="color: #008000; font-weight: bold">import</span> reader
+<span style="color: #008000; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">statistics</span> <span style="color: #008000; font-weight: bold">import</span> mean, stdev
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">csv</span>
+
+columnas <span style="color: #666666">=</span> [<span style="color: #BA2121">'Alcohol'</span>,<span style="color: #BA2121">'Malic acid'</span>,<span style="color: #BA2121">'Ash'</span>,<span style="color: #BA2121">'Alcalinity of ash'</span>,<span style="color: #BA2121">'Magnesium'</span>,<span style="color: #BA2121">'Total phenols'</span>,<span style="color: #BA2121">'Flavanoids'</span>,<span style="color: #BA2121">'Nonflavanoid phenols'</span>,
+ 	<span style="color: #BA2121">'Proanthocyanins'</span>,<span style="color: #BA2121">'Color intensity'</span>,<span style="color: #BA2121">'Hue'</span>,<span style="color: #BA2121">'OD280/OD315 of diluted wines'</span>,<span style="color: #BA2121">'Proline'</span>]
+
+<span style="color: #008000; font-weight: bold">with</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">'wine.data'</span>) <span style="color: #008000; font-weight: bold">as</span> dataset:
+    csv_reader <span style="color: #666666">=</span> csv<span style="color: #666666">.</span>reader(dataset, delimiter<span style="color: #666666">=</span><span style="color: #BA2121">','</span>)
+    lineas <span style="color: #666666">=</span> []
+    line_count <span style="color: #666666">=</span> <span style="color: #666666">0</span>
+    <span style="color: #008000; font-weight: bold">for</span> row <span style="color: #AA22FF; font-weight: bold">in</span> csv_reader:
+        lineas<span style="color: #666666">.</span>append(row)
+        line_count <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
+    <span style="color: #008000">print</span>(<span style="color: #BA2121">f'Processed </span><span style="color: #BB6688; font-weight: bold">{</span>line_count<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121"> lines.'</span>)
+
+<span style="color: #008000">print</span>(lineas)
+
+<span style="color: #408080; font-style: italic">#Imprimir las primeras 10 lineas</span>
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== PRIMERAS 10 LINEAS ======================"</span>)
+<span style="color: #008000; font-weight: bold">for</span> i <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #666666">10</span>):
+		<span style="color: #008000">print</span>(lineas[i])
+
+mins <span style="color: #666666">=</span> []
+maxs <span style="color: #666666">=</span> []
+<span style="color: #408080; font-style: italic">#Minimos y Máximos de cada columna</span>
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== MAXIMOS Y MINIMOS ======================"</span>)
+<span style="color: #008000; font-weight: bold">for</span> x <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas)):
+    valuesInColumn <span style="color: #666666">=</span> []
+    <span style="color: #008000; font-weight: bold">for</span> y <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count):
+        valuesInColumn<span style="color: #666666">.</span>append(<span style="color: #008000">float</span>(lineas[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>]))
+        
+    maxV <span style="color: #666666">=</span> <span style="color: #008000">max</span>(valuesInColumn)
+    maxs<span style="color: #666666">.</span>append(maxV)
+    minV <span style="color: #666666">=</span> <span style="color: #008000">min</span>(valuesInColumn)
+    mins<span style="color: #666666">.</span>append(minV)
+    <span style="color: #008000">print</span>(columnas[x] <span style="color: #666666">+</span> <span style="color: #BA2121">": "</span> <span style="color: #666666">+</span> <span style="color: #BA2121">"Max "</span> <span style="color: #666666">+</span> <span style="color: #008000">str</span>(maxV) <span style="color: #666666">+</span> <span style="color: #BA2121">", Min "</span> <span style="color: #666666">+</span> <span style="color: #008000">str</span>(minV))
+
+means <span style="color: #666666">=</span> []
+<span style="color: #408080; font-style: italic">#Promedio de cada columna</span>
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== PROMEDIOS ======================"</span>)
+<span style="color: #008000; font-weight: bold">for</span> x <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas)):
+    valuesInColumn <span style="color: #666666">=</span> []
+    <span style="color: #008000; font-weight: bold">for</span> y <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count):
+        valuesInColumn<span style="color: #666666">.</span>append(<span style="color: #008000">float</span>(lineas[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>]))
+        
+    columnMean <span style="color: #666666">=</span> mean(valuesInColumn)
+    means<span style="color: #666666">.</span>append(columnMean)
+    <span style="color: #008000">print</span>(columnas[x] <span style="color: #666666">+</span> <span style="color: #BA2121">": "</span> <span style="color: #666666">+</span> <span style="color: #BA2121">"Promedio "</span> <span style="color: #666666">+</span> <span style="color: #008000">str</span>(<span style="color: #008000">round</span>(columnMean,<span style="color: #666666">2</span>)))
+
+stds <span style="color: #666666">=</span> []
+<span style="color: #408080; font-style: italic">#Desviacion standard</span>
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== DESVIACIONES STANDARD ======================"</span>)
+<span style="color: #008000; font-weight: bold">for</span> x <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas)):
+    valuesInColumn <span style="color: #666666">=</span> []
+    <span style="color: #008000; font-weight: bold">for</span> y <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count):
+        valuesInColumn<span style="color: #666666">.</span>append(<span style="color: #008000">float</span>(lineas[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>]))
+        
+    desviacion <span style="color: #666666">=</span> stdev(valuesInColumn)
+    stds<span style="color: #666666">.</span>append(desviacion)
+    <span style="color: #008000">print</span>(columnas[x] <span style="color: #666666">+</span> <span style="color: #BA2121">": "</span> <span style="color: #666666">+</span> <span style="color: #BA2121">"Desviacion Standard "</span> <span style="color: #666666">+</span> <span style="color: #008000">str</span>(<span style="color: #008000">round</span>(desviacion,<span style="color: #666666">2</span>)))
+
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== DESVIACIONES STANDARD ======================"</span>)
+<span style="color: #008000">print</span>(stds)
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== PROMEDIOS ======================"</span>)
+<span style="color: #008000">print</span>(means)
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== MINIMOS ======================"</span>)
+<span style="color: #008000">print</span>(mins)
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== MAXIMOS ======================"</span>)
+<span style="color: #008000">print</span>(maxs)
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== NORMALIZACION ======================"</span>)
+
+normalizedDataset <span style="color: #666666">=</span>  [ [ <span style="color: #666666">0</span> <span style="color: #008000; font-weight: bold">for</span> i <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas) <span style="color: #666666">+</span> <span style="color: #666666">1</span>) ] <span style="color: #008000; font-weight: bold">for</span> j <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count) ]
+<span style="color: #008000; font-weight: bold">for</span> x <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas)):
+    <span style="color: #008000; font-weight: bold">for</span> y <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count):
+        value <span style="color: #666666">=</span> <span style="color: #008000">float</span>(lineas[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>])
+        normalizedDataset[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>] <span style="color: #666666">=</span> ((value <span style="color: #666666">+</span> means[x])<span style="color: #666666">/</span>stds[x])
+        
+standarizedDataset <span style="color: #666666">=</span>  [ [ <span style="color: #666666">0</span> <span style="color: #008000; font-weight: bold">for</span> i <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas) <span style="color: #666666">+</span> <span style="color: #666666">1</span>) ] <span style="color: #008000; font-weight: bold">for</span> j <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count) ]
+<span style="color: #008000; font-weight: bold">for</span> x <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #008000">len</span>(columnas)):
+    <span style="color: #008000; font-weight: bold">for</span> y <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(line_count):
+        value <span style="color: #666666">=</span> <span style="color: #008000">float</span>(lineas[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>])
+        standarizedDataset[y][x <span style="color: #666666">+</span> <span style="color: #666666">1</span>] <span style="color: #666666">=</span> (value <span style="color: #666666">-</span> mins[x])<span style="color: #666666">/</span>(maxs[x] <span style="color: #666666">-</span> mins[x])
+    
+<span style="color: #008000">print</span> (<span style="color: #BA2121">"====================== DIVIDE DATASET ======================"</span>)
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">train_test_split</span>(dataset, split<span style="color: #666666">=0.60</span>):
+	train <span style="color: #666666">=</span> <span style="color: #008000">list</span>()
+	train_size <span style="color: #666666">=</span> split <span style="color: #666666">*</span> <span style="color: #008000">len</span>(dataset)
+	dataset_copy <span style="color: #666666">=</span> <span style="color: #008000">list</span>(dataset)
+	<span style="color: #008000; font-weight: bold">while</span> <span style="color: #008000">len</span>(train) <span style="color: #666666">&lt;</span> train_size:
+		index <span style="color: #666666">=</span> randrange(<span style="color: #008000">len</span>(dataset_copy))
+		train<span style="color: #666666">.</span>append(dataset_copy<span style="color: #666666">.</span>pop(index))
+	<span style="color: #008000; font-weight: bold">return</span> train, dataset_copy
+
+train, test <span style="color: #666666">=</span> train_test_split(lineas)
+
+print_first_rows(train)
+<span style="color: #008000">print</span>(<span style="color: #BA2121">""</span>)
+print_first_rows(test)
+<span style="color: #008000">print</span>(<span style="color: #BA2121">""</span>)
+</pre></div>
