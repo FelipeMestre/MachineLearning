@@ -1,0 +1,215 @@
+<html>
+<title>Portfolio.Wine</title>
+<meta charset="UTF-8">
+<meta lang="es">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body class="w3-black">
+<div class="w3-padding-64 w3-content w3-text-grey" id="Wine">
+    <h1 class="w3-text-light-grey">Dataset Wine</h1>
+    <p>
+        El dataset contiene datos provenientes del análisis químico de vinos hechos en la misma región de Italia pero 
+        que derivan de distintos cultivadores de uvas. El análisis determinó la cantidad de los 13 componentes encontrados 
+        en los tres tipos de vinos. El problema de esta dataset se basa en construir varios modelos de clasificación para 
+        la clase del vino y la variable objetivo consiste en la clase de vino que puede tener valores 1, 2 o 3.
+    </p>
+
+    <h2>Atributos</h2>
+    <ul>
+        <li>
+            Alcohol: Porcentaje de alcohol presente en vino
+        </li>
+        <li>
+            Malic acid: Concentración de ácido málico en el vino. Medida (g/l)
+        </li>
+        <li>
+            Ash: Se define como toda la materia inorgánica que queda tras la ignición del residuo que queda de la evaporación 
+            del mosto o del vino. Medida (g/l).
+        </li>
+        <li>
+            Alkalinity of ash: La alcalinidad del ash se define como la suma de cationes, distintos del ion amonio, combinados con 
+            los ácidos orgánicos en el vino. Medida: (g/l)
+        </li>
+        <li>
+            Magnesium: La cantidad de magnesio que contiene una botella de vino. Medida (mg)
+        </li>
+        <li>
+            Total phenols: Es la concentración de fenoles en el vino. Medida (mg/l)
+        </li>
+        <li>
+            Flavanoids: Es la concentración de flavanoides en el vino. Medida (mg/l)
+        </li>
+        <li>
+            Nonflavanoid phenols: Es el porcentaje de Fenoles no flavonoides presentes en el vino. Medida (%)
+        </li>
+        <li>
+            Proanthocyanins: Es la concentración de Proantocianidinas en el vino. Medida (mg/l)
+        </li>
+        <li>
+            Color intensity: La intensidad de color del vino.
+        </li>
+        <li>
+            Hue: El tono del vino
+        </li>
+        <li>
+            OD280/OD315 of diluted wines: Es la concentración de proteínas en el vino. Medida (mg/l)
+        </li>
+        <li>
+            Proline: Es un aminoácido que regula el sabor del vino, se mide su concentracón. Medida: (mg/l)
+        </li>
+    </ul>
+
+    <h2>Apreciaciones de los datos</h2>
+    <img src="assets/PequenosProyectos/Wine/CaracteristicasDatos1.PNG" alt="Datos Sobre Wine 1">
+    <img src="assets/PequenosProyectos/Wine/CaracteristicasDatos2.PNG" alt="Datos Sobre Wine 2">
+    <img src="assets/PequenosProyectos/Wine/DistribucionDatos.PNG" alt="Distribuciones de Wine">
+    <p>
+        Lo primero a observar es que el dataset no presenta datos faltanes. Algunos atributos como proline, magnesio o ash presentan 
+        rangos bastante amplios con respecto a su media lo que indica una varianza considerable. En general en la industria del vino
+        el magnesio se mide en mg, el proline en mg/l y ash en g/l, esto justifica la varianza de rango frente al resto de los atributos
+        que tiene como unidad de medida mg/l o porcentaje. En cuanto a la distribución de los atributos la mayoria se podría decir que 
+        se asemeja a una distribución normal. Proline y malic acid tienen distribuciones claramente sesgadas, magnesium y color intensity 
+        apenas. En el caso de los flavanoids existen muchos valores expremos en el inicio de la gráfica, un facto a considerar.
+    </p>
+    <h2>Outliers</h2>
+    <img src="assets/PequenosProyectos/Wine/Outliers.PNG" alt="Outliers de Wine 1">
+    <img src="assets/PequenosProyectos/Wine/Outliers2.PNG" alt="Outliers de Wine 2">
+    <p>
+        Si se inicia el análisis desde la primer columna se puede observar que la mayoría de los outliers obtenidos con distancia 
+        euclidiana en Rapid Miner tienen el porcentaje de alcohol cercano al máximo (14.830). Ácido málico, ash, phenols y flavanoids están mayormente 
+        cercanos al mínimo pero no de forma extrema, la alcalinidad presenta valores cercanos al promedio por lo que no es un factor
+        influyente en los outliers, en magnesio observamos que se presenta un valor con el valor máximo y el resto está por encima de
+        la media. 
+        La tabla cierra con los no flavanoides minimamente por debajo de la media y los proanthocyanins casi en el máximo, la intensidad
+        de color bastante promedio, el hue un poco por encima de la media pero apenas al igual que el penultimo atributo. Finalmente el
+        proline que para mi junto con el alcohol es el valor más determinante son todos valores bastante cercanos al máximo.
+        Una excepción a estos dos valores que planteo como principales son las dos últimas filas, pero estas tienen una magnesio al máximo y 
+        la otra un proline de 278 demasiado bajo. 
+    </p>
+
+    <h2>Método de Prueba</h2>
+    <img src="assets/PequenosProyectos/Wine/ProcesoRM.PNG" alt="Proceso de Wine">
+    <p>
+        Para este dataset voy a usar un modelo naive bayes a modo de comprobar el impacto que tiene la normalizacion en los datos.
+        El proceso se divide en dos regiones, una arriba y otra abajo. En la región de arriba se trabaja con datos normalizados, 
+        en la parte de arriba de la región se calcula el error de test y en la de abajo el de entrenamiento. La región de abajo 
+        funciona igual pero esta vez los datos no se van a normalizar. En ambas se usa la técnica hold out de testeo.
+    </p>
+    <img src="assets/PequenosProyectos/Wine/Resultados.PNG" alt="Resultado del proceso">
+    <p>
+        Los resultados indican un error de entrenamiento igual para las dos regiones pero el error de test es menor en el caso 
+        de no normalizar. En este caso siempre se debe tener en cuenta el factor de aleatoreidad del split usado, naive bayes trabaja
+        con las frecuencias de aparición de los valores, por ende normalizar no debería tener un impacto muy grande en su performance.
+    </p>
+    <h2> Utilizando Python </h2>
+    <pre><code>
+from UT2_PD3 import print_first_rows
+from math import sqrt
+from random import randrange
+from csv import reader
+from statistics import mean, stdev
+import csv
+
+columnas = ['Alcohol','Malic acid','Ash','Alcalinity of ash','Magnesium','Total phenols','Flavanoids','Nonflavanoid phenols',
+ 	'Proanthocyanins','Color intensity','Hue','OD280/OD315 of diluted wines','Proline']
+
+with open('wine.data') as dataset:
+    csv_reader = csv.reader(dataset, delimiter=',')
+    lineas = []
+    line_count = 0
+    for row in csv_reader:
+        lineas.append(row)
+        line_count += 1
+
+print(lineas)
+
+#Imprimir las primeras 10 lineas
+print ("====================== PRIMERAS 10 LINEAS ======================")
+for i in range(10):
+		print(lineas[i])
+
+mins = []
+maxs = []
+#Minimos y Máximos de cada columna
+print ("====================== MAXIMOS Y MINIMOS ======================")
+for x in range(len(columnas)):
+    valuesInColumn = []
+    for y in range(line_count):
+        valuesInColumn.append(float(lineas[y][x + 1]))
+        
+    maxV = max(valuesInColumn)
+    maxs.append(maxV)
+    minV = min(valuesInColumn)
+    mins.append(minV)
+    print(columnas[x] + ": " + "Max " + str(maxV) + ", Min " + str(minV))
+
+means = []
+#Promedio de cada columna
+print ("====================== PROMEDIOS ======================")
+for x in range(len(columnas)):
+    valuesInColumn = []
+    for y in range(line_count):
+        valuesInColumn.append(float(lineas[y][x + 1]))
+        
+    columnMean = mean(valuesInColumn)
+    means.append(columnMean)
+    print(columnas[x] + ": " + "Promedio " + str(round(columnMean,2)))
+
+stds = []
+#Desviacion standard
+print ("====================== DESVIACIONES STANDARD ======================")
+for x in range(len(columnas)):
+    valuesInColumn = []
+    for y in range(line_count):
+        valuesInColumn.append(float(lineas[y][x + 1]))
+        
+    desviacion = stdev(valuesInColumn)
+    stds.append(desviacion)
+    print(columnas[x] + ": " + "Desviacion Standard " + str(round(desviacion,2)))
+
+print ("====================== DESVIACIONES STANDARD ======================")
+print(stds)
+print ("====================== PROMEDIOS ======================")
+print(means)
+print ("====================== MINIMOS ======================")
+print(mins)
+print ("====================== MAXIMOS ======================")
+print(maxs)
+print ("====================== NORMALIZACION ======================")
+
+normalizedDataset =  [ [ 0 for i in range(len(columnas) + 1) ] for j in range(line_count) ]
+for x in range(len(columnas)):
+    for y in range(line_count):
+        value = float(lineas[y][x + 1])
+        normalizedDataset[y][x + 1] = ((value + means[x])/stds[x])
+        
+standarizedDataset =  [ [ 0 for i in range(len(columnas) + 1) ] for j in range(line_count) ]
+for x in range(len(columnas)):
+    for y in range(line_count):
+        value = float(lineas[y][x + 1])
+        standarizedDataset[y][x + 1] = (value - mins[x])/(maxs[x] - mins[x])
+    
+print ("====================== DIVIDE DATASET ======================")
+def train_test_split(dataset, split=0.60):
+	train = list()
+	train_size = split * len(dataset)
+	dataset_copy = list(dataset)
+	while len(train) < train_size:
+		index = randrange(len(dataset_copy))
+		train.append(dataset_copy.pop(index))
+	return train, dataset_copy
+
+train, test = train_test_split(lineas)
+
+print_first_rows(train)
+print("")
+print_first_rows(test)
+print("")
+</code></pre>
+<p>
+    Este script de python lo que hace es imprimir las primeras 10 filas del dataset, muestra el máximo, el mínimo, la media y la
+    desviación estándar de cada columna. Luego se normalzian los datos y se estandarizan utilizando las formulas correspondientes.
+    Finalmente se completa el proceso de preparacion de datos dividiendo el dataset en test y training.
+</p>
+</div>
+</body>
+</html>

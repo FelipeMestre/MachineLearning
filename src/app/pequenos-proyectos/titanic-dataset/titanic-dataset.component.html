@@ -1,0 +1,103 @@
+<html>
+<title>Portfolio.Titanic</title>
+<meta charset="UTF-8">
+<meta lang="es">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body class="w3-black">
+<div class="w3-padding-64 w3-content w3-text-grey" id="Titanic">
+    <h1 class="w3-text-light-grey">Dataset Titanic</h1>
+    <p>
+        El problema consta de calcular la posibilidad de sobrevivir que tiene una persona en el titanic en base a ciertos atributos.
+        El dataset titanic es muy popular en el mundo de la ciencia de datos, cuenta con 13 atributos de varios tipos, algunos presentan
+        valores faltantes que hay que manejar e incluso el dataset presenta algunas observaciones interesantes que no están a simple vista
+        a la hora de manejar los atributos.
+    </p>
+
+    <h2>Atributos</h2>
+    <ul>
+        <li>
+            PClass: La clase del pasajero, valor ordinal entero
+        </li>
+        <li>
+            Survived: Si el pasajero logró sobrevivir, valor ordinal entero
+        </li>
+        <li>
+            Nombre: Nombre del pasajero: Valor polynomial
+        </li>
+        <li>
+            Edad: Edad del pasajero: Valor Ordinal real
+        </li>
+        <li>
+            Sibsp: Número de hermanos que tenía la persona a bordo, ordinal entero
+        </li>
+        <li>
+            Parch: Número de hijos que tenía una persona a bordo. Ordinal entero
+        </li>
+        <li>
+            Ticket: El número de pasaje que tenía a bordo. Nominal
+        </li>
+        <li>
+            Fare: La tarifá que pagó el pasajero. Ordinal real
+        </li>
+        <li>
+            Cabin: El número de cabina. Nominal
+        </li>
+        <li>
+            Puerto de embarcación: Puerto donde embarcó. Nominal
+        </li>
+        <li>
+            Boat: El bote salvavidas que usó, lo tienen solo las personas que sobrevivieron.
+            Nominal
+        </li>
+        <li>
+            Body: Número de cuerpo, solo lo tienen aquellas personas que fallecieron y su cuerpo fue encontrado.
+            Ordinal entero.
+        </li>
+    </ul>
+
+    <h2>Apreciaciones de los datos</h2>
+    <p>
+        Como este es un problema de clasificación binaria me propongo usar este modelo para clasificar las instancias. El modelo de regresión
+        logística es sensible al ruido en los datos, a los atributos correlacionados y al esparcimiento excesivo de los datos. Dadas estas
+        características se deberá analizar el dataset para máximizar el rendimiento del modelo elegido.
+    </p>
+    <p>
+        La primer observación es que Boat y Body están altamente correlacionadas porque si alguién sobrevivió no va a tener body, es imposible.
+        Entonces estos dos atributos son eliminables porque están altamente correlacionados entre si y con la variable objetivo. Luego podemos eliminar
+        atributos que no tienen relación con la muerte de un pasajero como el lugar donde embarcó, su ticket, su lugar de destino, su nombre, el número de hijos y en número de hermanos.
+        Todas estas variables agregan ruido al modelo. En cuanto a los valores faltantes el atributo cabina será removido por tener 1015 valores faltantes en 1310 registros
+        siendo una variable poco importante para el contexto. 
+    </p>
+    <p>
+        Una vez hechos los cambios necesarios los atributos restantes son: pclass, survived, sex, age y fare. Las primeras 3 tienen un outlier, la edad tiene 264 y 
+        la tarifa dos. En este caso opto por sustituir los valores faltantes por el promedio de los valores de la columna, en el caso de la edad serían 264 faltantes en 1310 registros 
+        y por ende no debería de haber una variación muy fuerte con respecto a los valores reales, además, la distribución de la edad presenta un sesgo que puede ser mejorado con
+        esta sustitución. 
+    </p>
+    <img src="assets/PequenosProyectos/Titanic/Proceso.PNG" alt="Proceso Titanic">
+    <p>
+        Para corroborar que los atributos no esten fuertemente correlacionados voy a utilizar una matriz de correlacion. 
+    </p>
+    <img src="assets/PequenosProyectos/Titanic/MatrizCorrelacion.PNG" alt="Matriz de correlacion">
+    <p>
+        Se puede observar que ninguno de los atributos tiene una correlación fuerte con el resto, hay algunos débilmente correlacionados con otros como tarifa y clase 
+        de pasajero lo cual tiene sentido. Dos variables se consideran fuertemente correlacionadas si su correlacion está por encima de 0.8
+    </p>
+    <img src="assets/PequenosProyectos/Titanic/Outliers.PNG" alt="Outliers">
+    <img src="assets/PequenosProyectos/Titanic/Atributes.PNG" alt="Atributes">
+    <p>
+        En cuanto a outliers la mayoría incluyen tarifas muy caras y edades avanzadas o tempranas. Tiene sentido dado que son las dos variables que más oscilan de los 
+        atributos seleccionados.
+    </p>
+
+    <img src="assets/PequenosProyectos/Titanic/ProcesoRegresion.PNG" alt="¨Proceso con regresion logistica">
+    <img src="assets/PequenosProyectos/Titanic/Resultado.PNG" alt="Resultado">
+    <p>Aqui se puede ver el proceso generado en Rapid Minner y la performance del modelo calculada con cross validation. Llama bastante la atención que en este caso
+        falla bastante más al predecir los verdaderos que los falsos.
+    </p>
+
+    <h2>Utilizando Python SCI-KIT Learn</h2>
+    En mi repositorio de git-hub se puede encontrar un análisis de este dataset hecho con sci-kit learn en python donde se sigue el recorrido presente en: <a target="_blank" href="https://www.kaggle.com/samsonqian/titanic-guide-with-sklearn-and-eda#2.-Loading-and-Viewing-Data-Set"> Titanic Kaggle</a>
+</div>
+</body>
+</html>

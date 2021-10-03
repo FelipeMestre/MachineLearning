@@ -1,0 +1,76 @@
+<html>
+<title>Portfolio.Articulos.TratamientoPrevioDeDatos</title>
+<meta charset="UTF-8">
+<meta lang="es">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body class="w3-black">
+    <div class="w3-padding-64 w3-content w3-text-grey" id="TratamientoPrevioDeDatos">
+        <h1 class="w3-text-light-grey">Tratamiento Previo de Datos</h1>
+        <p>
+            El primer paso de tratamiento previo de los datos es el correcto conocimiento del contexto del negocio.
+            Luego de entender la utilidad de los datos para generar valor se deberá análizar qué contienen los datos
+            para poder sacar el mejor provecho de ellos y evitar errores de interpretación.
+            Finalmente el último paso consiste en aplicar la preparación de los datos para ser utilizados por el modelo, 
+            muchos modelos de Machine Learning requieren que los datos tengan ciertas características.
+        </p>
+        <h2>Herramientas para entender datos</h2>
+        <p>
+            La primer pregunta a responder es acerca del significado de los atributos, el tipo que tienen y en qué rango se 
+            encuentran. Toda esta información sirve para tratar de entender qué relación tiene cada atributo en cuanto a 
+            la variable a predecir y entender mejor el contexto de los datos. 
+        </p> 
+        <p>
+            El tipo de los datos es importante debido a que hay modelos como la regresión cuya entrada debe ser númerica, 
+            también está el modelo naive bayes que solo acepta entradas categóricas entonces si tenemos atributos
+            numéricos que habrá que discretizar para usar este modelo, en este caso el proceso de discretización es importante
+            porque afecta al resultado del modelo.
+        </p>
+        <p>
+            La estadística descriptiva es una herramienta útil al momento de sacar conclusiones acerca de los datos. Hay factores
+            como la media, desviación estándar, la moda, los mínimos, los máximos y la correlación que brindan información sobre el
+            comportamiento de los datos para realizar mejores interpretaciones.
+        </p>
+        <p>
+            Otra forma de detección de detalles en los datos son las herramientas visuales. Usar gráficas puede ayudar a revelar la
+            estructura de los datos, valores outliers y la distribución de los datos, factor clave en el uso de algunos modelos como
+            LDA, Naive Bayes Gaussiano, Regresión Logística, Lineal y otros modelos que asumen que los datos tienen distribución normal.
+            Otra característica visualizable es la relación del atributo con los demás.
+        </p>
+        <h2>Valores Faltantes</h2>
+        <p>
+            Otro análisis a realizar consiste en considerar los valores faltantes del dataset, cuántos valores faltantes tiene el
+            atributo, a qué se puede deber que falten y qué impacto puede tener en el modelo. Hay algunos modelos cuya performance
+            se ve perjudicada por valores o faltantes o que simplemente no los toleran como las redes neuronales.
+
+            Hay varias técnicas para afrontar este problema como descartar el atributo, todas con sus pros y contras, algunas son 
+            reemplazar los faltantes por el máximo, el mínimo o la media, todo depende de interpretar correctamente cuál es la 
+            estrategia correcta que afecte lo menos posible al modelo.
+        </p>
+
+        <h2>Normalización y Estandarización</h2>
+        <p>
+            Muchos algoritmos necesitan reducir el impacto que significa la diferencia en la escala de medida de cada atributo.
+            El modelo k-nn por ejemplo se basa en el cálculo de la distancia euclidiana entre instancias, entonces para evitar
+            el impacto negativo de la diferencia entre la escala de medida de los datos es necesario normalizarlos para hacer que
+            el modelo sea válido. Dos transformaciones son la Estandarización y normalización.
+        </p>
+
+        <h2>Selección de características</h2>
+        <p>
+            La selección de características se trata de seleccionar solamente aquellos atributos que son importantes para hacer
+            predicciones. Un ejemplo de un modelo que se beneficia de esto es el k-nn, cuanto menos dimensiones tenga será más
+            performante y es conocido que si tiene demasiadas dimensiones el modelo no distingue entre instancias parecidas.
+            En general la selección de características reduce el overfitting, el tiempo de entrenamiento y aumenta la performance.
+        </p>
+
+        <h2>Outliers</h2>
+        <p>
+            Son valores que se alejan considerablemente del resto de los datos del dataset. Se pueden identificar mediante el cálculo 
+            de la distancia euclidiana, observando un gráfico de los datos, la densidad de los datos, su distribución e incluso usando 
+            clustering. En general son valores fruto de errores de mediciones que son inválidos en el contexto de la situación. 
+            Es prudente observar los valores para identificar cuál fue la causa de su aparición antes de retirarlos, ya que se pueden 
+            retirar valores excepcionales pero que son legítimos del dataset, perjudicando la posterior validez del modelo.
+        </p>
+    </div>
+</body>
+</html>

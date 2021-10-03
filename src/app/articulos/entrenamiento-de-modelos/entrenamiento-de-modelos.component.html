@@ -1,0 +1,42 @@
+<html>
+<title>Portfolio.Articulos.EntrenamientoDeModelos</title>
+<meta charset="UTF-8">
+<meta lang="es">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body class="w3-black">
+    <div class="w3-padding-64 w3-content w3-text-grey" id="EntrenamientoDeModelos">
+        <h1 class="w3-text-light-grey">Entrenamiento de modelos</h1>
+        <p>
+            En Machine Learning se trata de medir la precisión de un modelo como forma de comparación entre ellos y 
+            obviamente para asegurar el correcto rendimiento del mismo. Para ello existen muchas técnicas con sus ventajas
+            y desventajas.
+        </p>
+        <h2>Error de Entrenamiento</h2>
+        <p>
+            El error de entrenamiento es la proporción de aciertos en las predicciones de un modelo testado con los mismos datos
+            con los cuales fue entrenado. Este error no es descriptivo de la performance que pueda llegar a tener un modelo debido 
+            a que los datos de entrenamiento deberían ser fácilmente predecibles, más aún en casos de overfitting. Además un modelo 
+            que esté en producción tendrá que predecir datos distintos a los de entrenamineto.
+        </p>
+        <h2>Error de Testeo</h2>
+        <p>
+            El error de test es la proporción de aciertos en las predicciones de un modelo que se entrena con unos datos y se prueba
+            con otros datos cuyo valor es en realidad conocido, generalmente surge de dividir el dataset con el que se cuenta. 
+        </p>
+
+        <h2>Técnica Hold Out</h2>
+        <p>
+            En general producir datos puede ser bastante costoso, por eso la técnica hold out indica dividir el dataset en una parte
+            de entrenamiento y otra reservada para testear el modelo. Este modelo tiene la contra de que no se puede saber con exactitud
+            si la partición usada para testeo no es particularmente fácil para el modelo o presenta datos muy parecidos a los de entrenamiento
+        </p>
+
+        <h2>Cross Validation k-fold</h2>
+        <p>
+            Para solucionar las limitantes de la técnica hold out surge cross validation. Se basa en dividir el dataset en k partes disjuntas, 
+            seleccionar una para testear el modelo y usar el resto de las k-1 para entrenarlo, luego se repite este proceso con las partes restantes
+            y se calcula el error de testeo promedio. Es una medida mucho más rearlista pero más costosa computacionalmente comparada con la hold out
+        </p>
+    </div>
+</body>
+</html>

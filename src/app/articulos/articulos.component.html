@@ -1,0 +1,34 @@
+<html>
+<title>Portfolio.Articulos</title>
+<meta charset="UTF-8">
+<meta lang="es">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<body class="w3-black">
+<div class="w3-padding-64 w3-content w3-text-grey" id="Articulos">
+    <h1 class="w3-text-light-grey">Articulos</h1>
+    <div class="w3-padding-32 w3-content">
+        <h2>Introducción</h2>
+        <p>
+            A modo de introducción hay tres articulos: El primero define Machine Learning más a fondo y los separa de data mining, 
+            análisis estadístico, etc. El segundo explica la metodología CRSIP para proyectos de análisis de datos y el tercer artículo
+            define herramientas de Machine Learning y compara la disponibilida de algunos operadores
+        </p>
+        <button [routerLink]="['/Articulos/QueEsMl']">Más sobre Machine Learning</button>
+        <button [routerLink]="['/Articulos/MetodologiaCrisp']">Metodología CRISP </button>
+        <button [routerLink]="['/Articulos/Herramientas']">Herramientas ML </button>
+    </div>
+    
+    <div class="w3-padding-32 w3-content">
+        <h2>Tratamiento previo de datos</h2>
+        <p>
+            En Machine Learning hay una máxima muy utilizada: "El 80% del trabajo se basa en preparar los datos". Es crucial para que
+            Machine Learning sea útil que primero se entienda el contexto del negocio, luego de los datos y finalmente se preparan los
+            datos para ser utilizados. Este proceso es crucial debido a que un modelo basado en fallos interpretativos no sirve de nada
+            y probablemente brinde información errónea perjudicando a la organización.
+        </p>
+        <button [routerLink]="['/Articulos/TratamientoPrevioDeDatos']">Tratamiento previo de datos</button>
+        <button [routerLink]="['/Articulos/EntrenamientoDeModelos']">Entrenamiento de Modelos </button>
+    </div>
+</div>
+</body>
+</html>
