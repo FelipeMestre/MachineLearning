@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.knime.org/2008/09/XMLConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.knime.org/2008/09/XMLConfig http://www.knime.org/XMLConfig_2008_09.xsd" key="viewRepresentation">
+    <config key="keystore">
+        <entry key="dimensions" type="xint" value="3"/>
+        <config key="store_0_0">
+            <entry key="array-size" type="xint" value="15"/>
+            <entry key="0" type="xstring" value="Row4"/>
+            <entry key="1" type="xstring" value="Row8"/>
+            <entry key="2" type="xstring" value="Row11"/>
+            <entry key="3" type="xstring" value="Row13"/>
+            <entry key="4" type="xstring" value="Row17"/>
+            <entry key="5" type="xstring" value="Row23"/>
+            <entry key="6" type="xstring" value="Row25"/>
+            <entry key="7" type="xstring" value="Row28"/>
+            <entry key="8" type="xstring" value="Row30"/>
+            <entry key="9" type="xstring" value="Row31"/>
+            <entry key="10" type="xstring" value="Row33"/>
+            <entry key="11" type="xstring" value="Row37"/>
+            <entry key="12" type="xstring" value="Row42"/>
+            <entry key="13" type="xstring" value="Row44"/>
+            <entry key="14" type="xstring" value="Row47"/>
+        </config>
+        <config key="store_0_1">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="store_0_2">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="store_1_0">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="store_1_1">
+            <entry key="array-size" type="xint" value="14"/>
+            <entry key="0" type="xstring" value="Row51"/>
+            <entry key="1" type="xstring" value="Row55"/>
+            <entry key="2" type="xstring" value="Row58"/>
+            <entry key="3" type="xstring" value="Row62"/>
+            <entry key="4" type="xstring" value="Row66"/>
+            <entry key="5" type="xstring" value="Row68"/>
+            <entry key="6" type="xstring" value="Row73"/>
+            <entry key="7" type="xstring" value="Row78"/>
+            <entry key="8" type="xstring" value="Row82"/>
+            <entry key="9" type="xstring" value="Row85"/>
+            <entry key="10" type="xstring" value="Row86"/>
+            <entry key="11" type="xstring" value="Row89"/>
+            <entry key="12" type="xstring" value="Row97"/>
+            <entry key="13" type="xstring" value="Row99"/>
+        </config>
+        <config key="store_1_2">
+            <entry key="array-size" type="xint" value="1"/>
+            <entry key="0" type="xstring" value="Row72"/>
+        </config>
+        <config key="store_2_0">
+            <entry key="array-size" type="xint" value="0"/>
+        </config>
+        <config key="store_2_1">
+            <entry key="array-size" type="xint" value="1"/>
+            <entry key="0" type="xstring" value="Row106"/>
+        </config>
+        <config key="store_2_2">
+            <entry key="array-size" type="xint" value="14"/>
+            <entry key="0" type="xstring" value="Row101"/>
+            <entry key="1" type="xstring" value="Row102"/>
+            <entry key="2" type="xstring" value="Row105"/>
+            <entry key="3" type="xstring" value="Row110"/>
+            <entry key="4" type="xstring" value="Row114"/>
+            <entry key="5" type="xstring" value="Row115"/>
+            <entry key="6" type="xstring" value="Row120"/>
+            <entry key="7" type="xstring" value="Row130"/>
+            <entry key="8" type="xstring" value="Row131"/>
+            <entry key="9" type="xstring" value="Row134"/>
+            <entry key="10" type="xstring" value="Row135"/>
+            <entry key="11" type="xstring" value="Row137"/>
+            <entry key="12" type="xstring" value="Row139"/>
+            <entry key="13" type="xstring" value="Row144"/>
+        </config>
+    </config>
+    <entry key="warningMessage" type="xstring" value=""/>
+    <entry key="warningsInView" type="xboolean" value="true"/>
+    <entry key="headerColor" type="xstring" value="#FFF0C7"/>
+    <entry key="diagonalColor" type="xstring" value="#A6C0C5"/>
+    <entry key="displayFullscreenButton" type="xboolean" value="true"/>
+    <entry key="enableViewControls" type="xboolean" value="true"/>
+    <entry key="enableTitleEditing" type="xboolean" value="true"/>
+    <entry key="enableSubtitleEditing" type="xboolean" value="true"/>
+    <entry key="enableRowsNumberConfig" type="xboolean" value="true"/>
+    <entry key="enableConfusionMatrixRatesConfig" type="xboolean" value="true"/>
+    <entry key="enableClassStatisticsConfig" type="xboolean" value="true"/>
+    <entry key="enableOverallStatisticsConfig" type="xboolean" value="true"/>
+    <entry key="enableLabelsDisplayConfig" type="xboolean" value="true"/>
+</config>
