@@ -54,12 +54,12 @@
         <parameter key="local_random_seed" value="1992"/>
       </operator>
       <operator activated="true" class="k_nn" compatibility="9.10.001" expanded="true" height="82" name="k-NN" width="90" x="581" y="187">
-        <parameter key="k" value="5"/>
+        <parameter key="k" value="10"/>
         <parameter key="weighted_vote" value="true"/>
         <parameter key="measure_types" value="NumericalMeasures"/>
         <parameter key="mixed_measure" value="MixedEuclideanDistance"/>
         <parameter key="nominal_measure" value="SimpleMatchingSimilarity"/>
-        <parameter key="numerical_measure" value="CosineSimilarity"/>
+        <parameter key="numerical_measure" value="EuclideanDistance"/>
         <parameter key="divergence" value="GeneralizedIDivergence"/>
         <parameter key="kernel_type" value="radial"/>
         <parameter key="kernel_gamma" value="1.0"/>
