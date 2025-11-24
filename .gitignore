@@ -258,3 +258,4 @@ virtualenv/
 config.local.*
 *.local
 
+*.tfrecord*
