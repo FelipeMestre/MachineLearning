@@ -158,3 +158,103 @@ events.out.tfevents.*
 *.h5
 
 *.tfrecords*
+
+# Carpetas de datos
+data/
+dataset/
+datasets/
+raw_data/
+processed_data/
+raw/
+processed/
+input/
+output/
+inputs/
+outputs/
+
+# Modelos y checkpoints
+models/
+model/
+checkpoints/
+checkpoint/
+saved_models/
+weights/
+*.h5
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.ckpt
+*.pb
+*.onnx
+*.tflite
+
+# Resultados y logs
+results/
+result/
+logs/
+log/
+runs/
+wandb/
+mlruns/
+tensorboard_logs/
+*.log
+
+# Archivos de datos comunes
+*.csv
+*.tsv
+*.json
+*.jsonl
+*.parquet
+*.feather
+*.hdf5
+*.h5
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos grandes y temporales
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.tmp
+*.temp
+*.cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+virtualenv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Archivos de configuración local
+.env
+.env.local
+config.local.*
+*.local
+
