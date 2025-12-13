@@ -148,6 +148,8 @@ checkpoint
 
 # TensorBoard log files
 logs/
+my_logs/
+*log*
 events.out.tfevents.*
 
 # TensorFlow Lite
@@ -188,6 +190,7 @@ weights/
 *.pb
 *.onnx
 *.tflite
+*.keras
 
 # Resultados y logs
 results/
@@ -259,3 +262,5 @@ config.local.*
 *.local
 
 *.tfrecord*
+
+.cursor
