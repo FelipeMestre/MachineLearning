@@ -1,0 +1,47 @@
+<table>
+    <thead>
+        <th>Training Algorithm</th>
+        <th>Description</th>
+    </thead>
+    <tr>
+        <td>Batch Gradient Descent</td>
+        <td>Gradient Descent is a first-order optimization algorithm. 
+            It is used to find the minimum of a function. 
+            It is a batch algorithm, which means that it uses the entire dataset to compute the gradient.
+            Goes through the entire dataset for each iteration, calculating the gradient and updating the weights.
+            Then it repeats the process for a number of iterations, it is stable but slow for large datasets.
+        </td>
+        <td>
+            Steps:
+            <ol>
+                <li>Initialize the weights randomly</li>
+                <li>Predict the output for the training set</li>
+                <li>Compute the loss function</li>
+                <li>Compute the gradient of the loss function with respect to the weights</li>
+                <li>The mean of the gradients is the gradient of the loss function with respect to the weights</li>
+                <li>Update the weights by subtracting the gradient multiplied by the learning rate from the weights</li>
+                <li>Repeat the process for a number of iterations</li>
+            </ol>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Stochastic Gradient Descent</td>
+        <td>Gradient Descent is a first-order optimization algorithm. 
+            It is used to find the minimum of a function. On each iteration, it uses a single sample to compute the gradient and update the weights.
+            It is faster than batch gradient descent for large datasets, but it is less stable because it takes steps depending on the sample chosen randomly,
+            so it may never converge to the minimum. One technique to improve this algorithm is to schedule the learning rate to gradually decrease over time.
+            When using stochastic gradient descent, the training instances must be independent and identically distributed (IID) to ensure that the parameters get pulled toward the global optimum, on average
+        </td>
+    </tr>
+    <tr>
+        <td>Mini-batch Gradient Descent</td>
+        <td>
+            Is the same, but on each iteration, it uses a small batch of samples to compute the gradient and update the weights.
+            It is the middle point between batch gradient descent and stochastic gradient descent. It is great to use with GPUs because 
+            the CPU can load and preprocess a minibatch while the GPU is training the model with the previous minibatch. Another 
+            advantage is that the dataset can be shuffled, so the model is not biased towards the order of the samples.
+            The algorithm’s progress in parameter space is less erratic than with stochastic GD, especially with fairly large mini-batches. As a result, mini-batch GD will end up walking around a bit closer to the minimum than stochastic GD—but it may be harder for it to escape from local minima (in the case of problems that suffer from local minima
+        </td>
+    </tr>
+</table>
