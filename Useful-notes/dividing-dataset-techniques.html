@@ -1,0 +1,103 @@
+<h1>Dividing Dataset Techniques</h1>
+
+<p>
+    When training a model the only way to know if the model is generalizing well is to test it on data that was not used to train the model.
+    One way to do this is to use the model in production and see how it performs. Of course, you want to sleep quietly at night, 
+    so that is the worst possible choice.
+</p>
+<p>
+    What is done in practice is to split the dataset first ino a training and a test set. The model is trained on the first one and 
+    then the performance is evaluated on the test set, this is how an estimation of the model performance using new data is obtained (out-of-sample
+    generalization error). If training error is low and test error is high, the model is overfitting the training data and will not work
+    well in new data.
+</p>
+<p>
+
+</p>
+<ul>
+    <li>Training set:
+        <ul>
+            <li>Used to train the model, adjust a networks weights, regression coefficients, etc. The loss function is 
+                calculated on the training set.
+            </li>
+            <li>
+                In mini batch training, the training set is divided into mini batches, and the model is trained on each mini batch.
+                The loss function is calculated on each mini batch, then the error is averaged over the mini batches.
+            </li>
+            <li>
+                If train and test sets are used to decide between linear and polynomial regression, you can choose one. But then suppose you decide to 
+                test several hyperparameters for the model. If you only use the test set to evaluate the model, you will be overfitting the model to the test set.
+                And generating a good model for that particular test set of data, that will produce a worse model on new data.
+            </li>
+            <li>
+                A solution is to use hold-out validation, that requires to hold out a part of the data to evaluate several candidate models.
+                More specifically, you train multiple models with various hyperparameters on the reduced training set (i.e., the full
+                training set minus the validation set), and you select the model that performs
+                best on the validation set. After this holdout validation process, you train the
+                best model on the full training set (including the validation set), and this
+                gives you the final model. Lastly, you evaluate this final model on the test set
+                to get an estimate of the generalization error.
+            </li>
+            <li>Used to tune the model</li>
+            <li>Used to evaluate the model</li>
+        </ul>
+    </li>
+    <li>Validation set:
+        
+        <ul>
+            <li>
+                Suppose you want to find the best hyperparameters for the model, or you want to compare different models. 
+                This is the dataset that will be used to choose learning rate, number of layers, number of neurons, regularization, early stopping.
+            </li>
+            <li>
+                After a mini batch ends, the loss function is calculated on the validation set but without updating the model weights.
+                Is a measure of how the model is performing on new data.
+            </li>
+            <li>Used to tune the model</li>
+            <li>Used to evaluate the model</li>
+            <li>20% of the dataset</li>
+        </ul>
+    </li>
+    <li>Test set:
+        <ul>
+            <li>
+                Used to evaluate the model after the hyperparameters have been chosen. The idea is to test the model only once,
+                on completely new data that was not used to train the model.
+            </li>
+            <li>Generally a 20% of the dataset. But if you have a lot of data, you can use a smaller percentage.</li>
+        </ul>
+    </li>
+</ul>
+
+<h2>Cross Validation</h2>
+<p>
+    This division works well in most cases. But if the validation set is too small, the model evaluations may not be optimal conducting to a 
+    worse model. On the other hande, if the validation set is too large, the remaining training data will be much smaller than the full training set, 
+    and since the final model will be trained on the full training set, it is not ideal to compare candidate models trained on a much smaller training set.
+
+    it would be like selecting the fastest runner to run a marathon, but only running a few meters.
+
+    One way to solve this problem is to use cross-validation. This means that the dataset is divided into k equal parts, 
+    and the model is trained k times, each time using a different part as the validation set.
+    Average the results to get a better estimate of the model performance.
+    However the training time is increased by a factor of k, so it is not always practical.
+
+    It is useful when the dataset is small, and when the model is complex, and when the model is trained on a large number of iterations.
+</p>
+
+<h3>Data mismatch</h3>
+<p>
+    Suppose you are training a model for a flower classification problem. You can download a lot of flower images from the internet and train a model
+    but when the user takes a picture of a flower, the model will receive a really different image than the ones used to train the model.
+
+    This is a reminder that the validation and test sets must be representative of the data that the model will receive in production.
+</p>
+<p>
+    Andrew Ng suggests creating a train-dev set: a small subset of the training data (e.g., web images) you keep aside. You train only on the training set, then evaluate on the train-dev set.
+
+    If performance is bad on train-dev, the model overfit the training set → simplify/regularize the model, get more or cleaner training data.
+
+    If performance is good on train-dev but bad on the dev set (real mobile photos), the issue is data mismatch → preprocess or adapt the web images to look more like mobile images and retrain.
+
+    Once the model performs well on both train-dev and dev, you evaluate it a final time on the test set to estimate how it will perform in production.
+</p>
