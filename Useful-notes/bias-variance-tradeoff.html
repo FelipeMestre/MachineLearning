@@ -1,0 +1,24 @@
+<h1>
+    Bias vs Variance
+</h1>
+
+<p>
+    It is a way to decompose the models generalization error in three parts: bias², variance, and irreducible noise.
+    Bias is how far the model is from the true function (systematic error). Another way to describe it is the errors that occur due to wrong
+    assumptions about the data, like asuming it is a linear relationship when it is a quadratic one. A high bias model will be underfitting.
+</p>
+
+<p>
+    Variance is how much the model variates its answers when trained on different datasets from the same distribution (instability). For example, 
+    a model with many degrees of freedom will have a high variance and thus overfit the training data.
+</p>
+
+<p>
+    The irreductible noise is given by the data, it cannot be reduced by the model, the only way to reduce is to get cleaner data, fix the sources
+    such as broken sensors, or detect and remove outliers.
+</p>
+
+<p>
+    Increasing a model complexity will increase its variance and decrease its bias, conversely, decreasing the complexity will increase the bias
+    and decrease the variance which is called the bias-variance trade-off.
+</p>
