@@ -1,0 +1,85 @@
+<h1>Ensembles</h1>
+<p>
+    An ensamble is a group of models that are combined to make a prediction.
+    The models are trained on subsets of the data and then combined to make a prediction. Some techniques are:
+    <ul>
+        <li>Bagging</li>
+        <li>Boosting</li>
+        <li>Stacking</li>
+    </ul>
+    When making a prediction, the models can vote or average their predictions. 
+    Generally the ensemble model will perform better than the individual models, even if they are weak learners but diverse.
+
+    Suppose you have a slightly biased coin that has a 51% chance of coming up heads and 49% chance of coming up tails. If you toss it 1,000
+    times, you will generally get more or less 510 heads and 490 tails, and hence
+    a majority of heads. If you do the math, you will find that the probability of
+    obtaining a majority of heads after 1,000 tosses is close to 75%. The more
+    you toss the coin, the higher the probability (e.g., with 10,000 tosses, the
+    probability climbs over 97%). This is due to the law of large numbers: as you
+    keep tossing the coin, the ratio of heads gets closer and closer to the probability of heads (51%).
+
+    Similarly, suppose you build an ensemble containing 1,000 classifiers that are
+    individually correct only 51% of the time (barely better than random
+    guessing). If you predict the majority voted class, you can hope for up to 75%
+    accuracy! However, this is only true if all classifiers are perfectly
+    independent, making uncorrelated errors, which is clearly not the case
+    because they are trained on the same data. They are likely to make the same
+    types of errors, so there will be many majority votes for the wrong class,
+    reducing the ensemble’s accuracy.
+
+    Ensemble methods work best when the predictors are as independent from one another as
+    possible. One way to get diverse classifiers is to train them using very different
+    algorithms. This increases the chance that they will make very different types of errors,
+    improving the ensemble’s accuracy.
+</p>
+
+<p>
+    Soft voting is when classifiers predict class probabilities and the ensemble combines them by averaging them. 
+    It outperforms hard voting because it takes into account the confidence of the predictions.
+</p>
+
+<h2>Bagging</h2>
+<p>
+    One method of getting an ensamble is to use the same algorithm for every predictor, but train them on different random subsets of the 
+    training sets. When sampling is done with replacement this method is called bagging. When sampling is performed without replacement it is 
+    called pasting
+
+    Both methods allow the same sampled to be selected multiple times on multiple predictors, but only bagging allow the same sample to be selected 
+    multiple times by the same predictor
+</p>
+<p>
+    Aggregation reduces bias and variance. On regression, a mean can be made to "vote". Bagging and pasting scale very well because predictors
+    can be trained on different cpus, or threads or server.
+
+    Bagging introduces a bit more diversity in the subsets each predictor trains on. This generates models with less variance, but more
+    bias than pasting. The extra diversity means that predictors end up less correlated, thats why variance is reduced.
+    In general, bagging models perform better, but if the capacity needed is available, both pasting and bagging can be compared using cross validation
+</p>
+<p>
+    When bootstrap = true and replacement is on, generally a model of the ensamble is trained on the 63% of the dataset. That 37% left is not 
+    the same for every model, and that not sampled instances are called out of bag instances.
+
+    Random Patches is a technique that introduces random feature selection to the predictors, exchanging bias for more variance. It has 
+    the same hyperparameters that are used with training instances: Max_instances and bootstrap. Sampling subspaces is the technique of 
+    selecting a set of features.
+</p>
+
+
+<h1>Random Forest</h1>
+<p>
+    Random forest is a bagging ensemble of random trees, generally built with max_samples to the size of the training set. A random Forest
+    can be used for clasification and regression.
+
+    The forest introduces extra randomness when training a tree, instead of splitting by finding the best feature, it finds the best of a 
+    randomly selected subset of features. The result is a better tree diversity that gets less variance to the model and high bias generally
+    getting a better model.
+</p>
+<p>
+    Feature’s importance can be measured by looking at how much the tree nodes that use that
+    feature reduce impurity on average, across all trees in the forest. More
+    precisely, it is a weighted average, where each node’s weight is equal to the
+    number of training samples that are associated with it.
+
+    Random forests are very handy to get a quick understanding of what features actually matter, in particular if you need to 
+    perform feature selection.
+</p>
