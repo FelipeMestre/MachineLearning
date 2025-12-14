@@ -1,0 +1,38 @@
+<h1>PCA</h1>
+<p>
+    PCA is a technique that reduces the dimensionality of the data by projecting it into a lower-dimensional space.
+    It identifies the axes that explain the most variance in the data and projects the data onto them.
+    To find the principal components, the algorithm uses a standard matrix decomposition technique called singular value decomposition (SVD).
+    It can decompose the training set into a multiplication of three matrices: U, S, and V. V contains the principal components in its columns.
+    PCA assumes that the dataset is centered around the origin. As you will see, Scikit-Learn’s PCA classes take care of centering the data for you
+</p>
+
+<p>
+    Once you have identified all the principal components, you can reduce the
+    dimensionality of the dataset down to d dimensions by projecting it onto the
+    hyperplane defined by the first d principal components. Selecting this
+    hyperplane ensures that the projection will preserve as much variance as possible.
+</p>
+
+<p>
+    Another useful piece of information is the explained variance ratio of each principal component, available via the explained 
+    variance ratio variable. The ratio indicates the proportion of the dataset’s variance that lies along each principal component.
+    Its computational complexity is O(m × d²) + O(d³), instead of O(m × n²) + O(n³) for the full
+    SVD approach, so it is dramatically faster than full SVD when d is much smaller than n.
+</p>
+
+<h3>Randomized PCA</h3>
+<p>
+    Randomized PCA is a variant of PCA that uses a random matrix to project the data into a lower-dimensional space.
+    It is a faster alternative to the standard PCA algorithm, and it is useful for large datasets.
+</p>
+
+<h3>Incremental PCA</h3>
+<p>
+    One problem with the preceding implementations of PCA is that they require
+    the whole training set to fit in memory in order for the algorithm to run.
+    Fortunately, incremental PCA (IPCA) algorithms have been developed that
+    allow you to split the training set into mini-batches and feed these in one
+    mini-batch at a time. This is useful for large training sets and for applying
+    PCA online (i.e., on the fly, as new instances arrive).
+</p>

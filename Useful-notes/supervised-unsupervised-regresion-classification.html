@@ -1,0 +1,43 @@
+<h1>Supervised vs Unsupervised Learning</h1>
+
+<p>
+    Given a set of points X associated with a set of outcomes Y, we want to build a model that can predict the outcome for a new input.
+    
+    Based on the type of the prediction we want to make, we can classify the problem into two types:
+    <ul>
+        <li>Classification</li>
+        <li>Regression</li>
+    </ul>
+
+    A classification problem is a problem where the outcome is a categorical variable.
+    For example, if we want to predict the outcome of a coin toss, the outcome is a categorical variable because it can be either heads or tails.
+    A regression problem is a problem where the outcome is a continuous variable.
+    For example, if we want to predict the price of a house, the outcome is a continuous variable because it can be any value between a minimum and a maximum.
+
+    There are also another two types of models, based on what they learn from the data
+    <ul>
+        <li>
+            Discriminative models
+            <ul>
+                <li>Learn the decision boundary between the classes, learns P(y|x)</li>
+                <li>Example: Logistic regression, Support Vector Machines (SVM), Neural Networks with softmax output layer, Random Forest, Gradient Boosting (XGBoost / LightGBM as concepts)</li>
+            </ul>
+        </li>
+        <li>
+            Generative models
+            <ul>
+                <li>It learns how the data is generated, P(x|y). Sometimes based on the knowledge of P(y|x) the model deduces P(x|y)</li>
+                <li>It learns probability distributions of the data</li>
+                <li>Example: GANs, LLMs</li>
+            </ul>
+        </li>
+
+    </ul>
+
+    A discriminative model is a model that 
+</p>
+
+<p>
+    Unsupervised learning is a type of machine learning where the model is trained on an unlabeled dataset.
+    The model is trained to find patterns in the data.
+</p>

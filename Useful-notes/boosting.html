@@ -1,0 +1,124 @@
+<h1>Boosting</h1>
+<p>
+    Is an ensamble method that combine weak learners into a strong one. The main idea is to sequentially train predictors and each one has to 
+    outperform its predecesor.
+</p>
+
+<h2>AdaBoost</h2>
+<p>
+    One way to correct its predecesor is to make the new model pay more atention to the instances that the previous model underfit, this 
+    makes the new model focus more and more on hard cases.
+    The algorithm first trains a decision tree model, and then make inferences on the training dataset. The instances that where not predicted 
+    right get their relative weight updated, and on the next iteration the new model takes them more in account.
+
+    Once the predictors are training the ensable makes predictions like bagging or pasting. The algorith also has a learning rate parameter.
+
+    There is one important drawback to this sequential learning technique: training cannot be parallelized since each predictor 
+    can only be trained after the previous predictor has been trained and evaluated. As a result, it does not scale as well as bagging or pasting.
+</p>
+<p>
+    <ol>
+        <li>Each instance weight is set to 1/m (m is the dataset size)</li>
+        <li>In loop
+            <ol>
+                <li>Train a weak predictor h_t(x) using the instance weights w_ti (t is the iteration number)</li>
+                <li>
+                    The algorithm of training tries to reduce the error e_t, defined as the weighted sum of the errors of the misclassified instances
+                    The formula is: e_t = sum(w_ti * I(h_t(x_i) != y_i)) / sum(w_ti)
+                </li>
+                <li>
+                    Once the error is computed, the algorithm calculates the weight of the predictor in the ensemble called alpha_t
+                    alpha_t = learning_rate * log((1 - e_t) / e_t)
+
+                    if e_t > 0.5, then the model is worse than random guessing, so alpha_t < 0 and it is discarded
+                    The little the error, the bigger the alpha_t so the predictor is more important
+                </li>
+                <li>
+                    Now comes the adaptive part, the instance weights are updated
+                    w(t+1)_i = w(t)_i * exp(alpha_t) if h_t(x_i) = y_i else w(t+1)_i = w(t)_i * exp(-alpha_t)
+                    The idea is to give more weight to the misclassified instances, so they are more important in the next iteration.
+                    The weights are normalized so they sum to 1.
+                </li>
+                <li>Next step is to normalize the weights so they sum to 1.</li>
+                <li>
+                    Once all T iterations are completed, the algorithm makes the predictions by taking the vote of all predictors, weighted by alpha_t
+                    The formula is:
+                    P(x) = sign(sum(alpha_t * h_t(x) for t in T))
+                    The sign function returns 1 if the sum is positive, -1 if the sum is negative, and 0 if the sum is zero.
+                    This is a weighted majority vote.
+                </li>
+            </ol>
+
+            Pure adaboost is binary classification only, but it can be extended to multiclass classification.
+        </li>
+    </ol>
+</p>
+
+<h2>Gradient Boosting</h2>
+<p>
+    Gradient Boosting builds an ensemble of weak learners in a sequential way, where each new model is trained to correct the errors 
+    of the current ensemble.
+    
+    Instead of reweighting instances like AdaBoost, Gradient Boosting fits the new model to the residual errors 
+    (or more generally, to the negative gradient of the loss function).
+    
+    This makes the algorithm very flexible: by changing the loss function, you can adapt it to regression, 
+    classification, and other tasks.
+</p>
+<p>
+    The algorithm usually starts with a very simple model that makes a constant prediction (for example, the mean of the targets in regression),
+    and then iteratively adds decision trees that predict how to correct the current model. Each new tree is scaled by a learning rate 
+    so that the ensemble improves gradually and avoids overfitting.
+    As with AdaBoost, the predictors are trained sequentially, so training cannot be fully parallelized and does not scale as easily 
+    as bagging-type methods.
+</p>
+<p>
+    <ol>
+        <li>
+            <strong>Initialization</strong><br />
+            Start with an initial model F<sub>0</sub>(x). For regression with squared error, this is often the mean of the target values:
+            F<sub>0</sub>(x) = mean(y<sub>i</sub>) over the training set.
+        </li>
+        <li>
+            <strong>For t = 1 to T (number of boosting rounds)</strong>
+            <ol>
+                <li>
+                    <strong>Compute pseudo-residuals</strong><br />
+                    For each training instance x<sub>i</sub>, compute the negative gradient of the loss with respect 
+                    to the current prediction F<sub>t-1</sub>(x<sub>i</sub>).<br />
+                    For squared error loss L(y, F(x)) = (y - F(x))² / 2, the pseudo-residuals are simply:
+                    r<sub>ti</sub> = y<sub>i</sub> - F<sub>t-1</sub>(x<sub>i</sub>)
+                </li>
+                <li>
+                    <strong>Fit a weak learner to the residuals</strong><br />
+                    Train a weak model h<sub>t</sub>(x) (often a shallow decision tree) 
+                    to predict the pseudo-residuals r<sub>ti</sub> from the inputs x<sub>i</sub>.
+                </li>
+                <li>
+                    <strong>Compute the step size (optional but common)</strong><br />
+                    Find a scalar &gamma;<sub>t</sub> that best minimizes the loss when adding the new tree to the current model:
+                    <br />
+                    &gamma;<sub>t</sub> = argmin<sub>&gamma;</sub> ∑ L(y<sub>i</sub>, F<sub>t-1</sub>(x<sub>i</sub>) + &gamma; · h<sub>t</sub>(x<sub>i</sub>))
+                </li>
+                <li>
+                    <strong>Update the ensemble</strong><br />
+                    Update the model by adding the new weak learner scaled by the learning rate and the step size:
+                    <br />
+                    F<sub>t</sub>(x) = F<sub>t-1</sub>(x) + learning_rate · &gamma;<sub>t</sub> · h<sub>t</sub>(x)
+                    <br />
+                    The learning rate (also called shrinkage) controls how strongly each new tree changes the ensemble. 
+                    Smaller learning rates usually require more trees but help reduce overfitting.
+                </li>
+            </ol>
+        </li>
+        <li>
+            <strong>Final prediction</strong><br />
+            After T iterations, the final model is:
+            <br />
+            F<sub>T</sub>(x) = F<sub>0</sub>(x) + ∑ (learning_rate · &gamma;<sub>t</sub> · h<sub>t</sub>(x)) for t = 1 to T
+            <br />
+            For regression, F<sub>T</sub>(x) is the predicted value. For classification, F<sub>T</sub>(x) is passed through a suitable link function
+            (for example a logistic function) to obtain class probabilities and then a class prediction.
+        </li>
+    </ol>
+</p>

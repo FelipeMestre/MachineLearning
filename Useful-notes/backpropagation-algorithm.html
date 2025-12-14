@@ -1,0 +1,268 @@
+<h1>Backpropagation Algorithm</h1>
+<p>
+    I implemented a neural network for a multi class clasification problem using the MNIST dataset
+</p>
+<h2>Preconditions</h2>
+<p>
+    The input of the net is a matrix of shape (mini_batch, features).
+        
+    Each hidden layer should store a weights matrix with shape (previous_layer_neurons, current_layer_neurons) because 
+    to calculate the activation the weights matrix will be multiplied by the previous layer output of shape (prev_layer_input, previous_layer_neurons)
+    generating a chain of layers.
+
+    A bias vector of shape (current_layer_neurons,) should be stored for the bias terms
+
+    Each layer should have access to the implementation of its activation function and its derivative
+
+    One matrix of shape (batch_size, number_of_neurons) will store the layers activation
+
+    A matrix of shape (batch_size, number_of_neurons) must be kept to store the output of the layer
+
+    Also, another matrix of size (batch_size, number_of_neurons) will serve to store the output gradients later in training
+
+    A (number_of_neurons,) matrix for the bias gradients
+
+    And a (previous_layer_neurons, current_layers_number_of_neurons) for the weights gradients
+</p>
+
+<h2>Steps</h2>
+<ol>
+    <li>Get a mini batch of data</li>
+    <li>
+        Make a forward pass through the net storing the cache values on the previously defined matrixes
+        <ol>
+            <li>Multiply the weights matrix with the output of the previous layer and add the bias vector to that</li>
+            <li>Apply an activation function to the resulting matrix</li>
+            <li>The output of this layer, pass it to the next layer as parameter and apply the same operation</li>
+            <li>When the output layer is reached, the forward pass ends and the output of the network can be processed</li>
+        </ol>
+    </li>
+    <li>
+        Make a backpropagation pass through the network making it learn.
+        Take the result of the network for all the mini-batch instances
+        Start from the output-layer, take the output of the network of shape (batch_size, possible_classes)
+        The loss function depends on the output of the layer, that is an activation that depends on the pre-activation of the layer, that depends on the activation of the previous layer, and so on.
+        So the activation of this layer depends on a linear computation of the previous layer activation, 
+        If the loss changes when the activation changes, and the activation changes when the pre-activation changes 
+        the loss changes when the pre-activation changes.
+
+        The chain Rule: For y=f(g(x)): The derivative (dy/dx) is (f'(g(x)) . g'(x))
+        By taking the derivative of the outer function (leaving the inner one alone) 
+        and multiplying it by the derivative of the inner function; it's often called 
+        the "outside-inside rule," differentiating layer by layer from the outside in
+
+        So for each layer
+        <ol>
+            <li>
+                The idea is to calculate the derivative of the loss function L with with respect to the pre-activation.
+                But the loss function has the activation as parameter, in order to relate it with the derivative of L 
+                with respect of the pre-activation the chain rule is needed.
+
+                dLoss/dPre-Activation = dLoss/dActivation x dActivation/dPre-Activation
+
+                The dActivation/dPre-Activation is the derivative of the layers activation function 
+                with respect the pre-activation. If using ReLu for example, it is one for positive
+                pre-activation and 0 for negative. This derivative is call layer error.
+            </li>
+            <li>
+                In the output layer for this example, to calculate the gradients for all the mini-batch
+                weights the derivative of the cross-entropy with respect to the activation
+                must be multiplied by the derivative of the (Layer-1Weights x Weights + bias) 
+                with respect to the weights.
+                
+                As we are using coross-entropy with the softmax function, it is proven that the result of 
+                the derivative of crossEntropy(softmax(pre-activation))
+                results in the substraction of the layer outputs and the targets
+
+                so dLoss/dPre-Activation = y - Y
+
+                So this way the output gradients vector with shape (32, 10) is calculated
+            </li>
+
+            <li>
+                The next step is to calculate the derivative of the loss function with respect
+                to the weights, to get the weights gradients.
+            
+                The key point is that the pre-activation is a linear function of the weights.
+                For a dense layer, the pre-activation matrix is computed as:
+            
+                <br/><br/>
+                pre_activation = (previous_layer_activations · weights) + bias
+                <br/><br/>
+            
+                Where:
+                <ul>
+                    <li>previous_layer_activations has shape (batch_size, previous_layer_neurons)</li>
+                    <li>weights has shape (previous_layer_neurons, current_layer_neurons)</li>
+                    <li>pre_activation has shape (batch_size, current_layer_neurons)</li>
+                    <li>output_gradients is dLoss/dPre-Activation and has shape (batch_size, current_layer_neurons)</li>
+                </ul>
+            
+                To reach the weights, we apply the chain rule:
+            
+                <br/><br/>
+                dLoss/dWeights = dLoss/dPre-Activation · dPre-Activation/dWeights
+                <br/><br/>
+            
+                Now, focus on what a single weight does. A weight connects one "input component" coming from the previous layer
+                to one neuron in the current layer. For one training example, the contribution of that weight to the pre-activation
+                is the input value multiplied by the weight. Therefore, for a single example, the derivative of the pre-activation
+                with respect to that weight is simply the corresponding input value from previous_layer_activations.
+            
+                <br/><br/>
+                So, each sample contributes: (previous_layer_activation) × (output_gradient)
+                <br/><br/>
+            
+                Since a mini-batch contains multiple samples, the total gradient of a weight is the sum of the contributions
+                of all samples in the batch. The matrix multiplication:
+            
+                <br/><br/>
+                previous_layer_activations.T · output_gradients
+                <br/><br/>
+            
+                performs exactly that sum across the batch dimension for every pair (previous neuron, current neuron) at once:
+                <ul>
+                    <li>p revious_layer_activations.Thas shape (previous_layer_neurons, batch_size)</li>
+                    <li>output_gradients has shape (batch_size, current_layer_neurons)</li>
+                    <li>the result has shape (previous_layer_neurons, current_layer_neurons), which matches the weights shape</li>
+                </ul>
+            
+                If the loss is averaged over the batch, we also average the gradients:
+            
+                <br/><br/>
+                dLoss/dWeights = (previous_layer_activations.T · output_gradients) / batch_size
+                <br/><br/>
+            </li>      
+            <li>
+                The next step is to calculate the derivative of the loss function with respect
+                to the bias, to get the bias gradients.
+            
+                The bias is added to the pre-activation of each neuron in the current layer:
+            
+                <br/><br/>
+                pre_activation = (previous_layer_activations · weights) + bias
+                <br/><br/>
+            
+                Where bias has shape (current_layer_neurons,). The important detail is that the same bias vector
+                is added to every sample in the mini-batch.
+            
+                By the chain rule:
+            
+                <br/><br/>
+                dLoss/dBias = dLoss/dPre-Activation · dPre-Activation/dBias
+                <br/><br/>
+            
+                For a given neuron, the pre-activation increases by 1 if its bias increases by 1, for every sample.
+                So the derivative of pre-activation with respect to bias is 1 for each sample.
+            
+                Therefore, each sample contributes its output gradient directly to the bias gradient, and the total
+                bias gradient is the sum of output_gradients across all samples in the batch:
+            
+                <br/><br/>
+                dLoss/dBias = sum(output_gradients over the batch dimension)
+                <br/><br/>
+            
+                In code, this is:
+            
+                <br/><br/>
+                bias_gradients = np.sum(output_gradients, axis=0)
+                <br/><br/>
+            
+                If the loss is averaged over the batch, we also average the bias gradients:
+            
+                <br/><br/>
+                dLoss/dBias = np.sum(output_gradients, axis=0) / batch_size
+                <br/><br/>
+            </li>      
+        </ol>
+    </li>
+    <li>
+        The next step is to propagate the gradients to the previous layer, to compute the derivative of the loss
+        with respect to the previous layer activations. This value will be used by the previous layer to continue
+        the backpropagation process.
+    
+        We know that the current layer pre-activation is computed as:
+    
+        <br/><br/>
+        pre_activation = (previous_layer_activations · weights) + bias
+        <br/><br/>
+    
+        At this point we already computed:
+    
+        <br/><br/>
+        output_gradients = dLoss/dPre-Activation
+        <br/><br/>
+    
+        To propagate backwards, we want:
+    
+        <br/><br/>
+        previous_layer_gradients = dLoss/dPreviousLayerActivations
+        <br/><br/>
+    
+        Applying the chain rule:
+    
+        <br/><br/>
+        dLoss/dPreviousLayerActivations = dLoss/dPre-Activation · dPre-Activation/dPreviousLayerActivations
+        <br/><br/>
+    
+        The pre-activation is a linear function of previous_layer_activations. If we increase one component of
+        previous_layer_activations, the pre-activation of each output neuron increases proportionally to the
+        corresponding weight that connects them. This relationship is represented by the weights matrix.
+    
+        Therefore, the gradient is obtained by multiplying output_gradients by the transpose of the weights:
+    
+        <br/><br/>
+        previous_layer_gradients = output_gradients · weights.T
+        <br/><br/>
+    
+        Shape check:
+        <ul>
+            <li>output_gradients has shape (batch_size, current_layer_neurons)</li>
+            <li>weights.T has shape (current_layer_neurons, previous_layer_neurons)</li>
+            <li>previous_layer_gradients has shape (batch_size, previous_layer_neurons)</li>
+        </ul>
+    
+        This result tells the previous layer how its activations should change in order to reduce the loss.
+    </li>
+    <li>
+        Once the output layer gradients have been computed, the same backpropagation pattern is repeated for every
+        hidden layer, moving from the last layer to the first one.
+    
+        Each hidden layer receives the gradients coming from the layer ahead (the next layer in the forward direction).
+        Those incoming gradients represent how the loss changes with respect to this layer output (its activations).
+        Since the layer output is an activation of the layer pre-activation, the chain rule is applied again:
+    
+        <br/><br/>
+        dLoss/dPre-Activation = dLoss/dActivation x dActivation/dPre-Activation
+        <br/><br/>
+    
+        With dActivation/dPre-Activation being the derivative of the activation function of that layer, evaluated on
+        the stored pre-activation values from the forward pass. This produces the layer output_gradients for that layer.
+    
+        Once output_gradients is known for a layer, the same two gradient computations are performed:
+        <ul>
+            <li>dLoss/dWeights = previous_layer_activations.T · output_gradients (and averaged by batch_size if needed)</li>
+            <li>dLoss/dBias = sum(output_gradients over the batch dimension) (and averaged by batch_size if needed)</li>
+        </ul>
+    
+        Then, to keep propagating backwards, the layer computes:
+        <br/><br/>
+        dLoss/dPreviousLayerActivations = output_gradients · weights.T
+        <br/><br/>
+        and passes this matrix to the previous layer.
+    
+        After gradients have been computed, the network updates parameters using gradient descent. For each layer:
+        <br/><br/>
+        weights = weights - learning_rate x weights_gradients
+        <br/><br/>
+        bias = bias - learning_rate x bias_gradients
+        <br/><br/>
+    
+        This update step is applied after each mini-batch (mini-batch gradient descent), and repeated across many
+        mini-batches and epochs, gradually reducing the loss as the weights and biases move in the direction that
+        improves the predictions.
+    </li>
+    
+
+    
+</ol>

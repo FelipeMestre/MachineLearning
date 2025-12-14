@@ -1,0 +1,75 @@
+<h1>Error in Machine Learning</h1>
+
+<p>
+    Understanding your clients requirement is the most important thing an engineer must do before starting to build a solution.
+    If you understand the business problem, the non-functional requirements, the context where the solution will be used, the nature
+    of the involved data, and the expected performance, you can start to design a solution.
+</p>
+
+<p>
+    A key part of Machine Learning is to define how the error of the model is going to be measured, because performance is going to be 
+    strongly related to the error of the model, is the metric that the model will be evaluated against.
+</p>
+
+<h2>The types of predictions in classification problems are</h2>
+<p>
+    True Positive (TP): Correctly predicted positive.
+    True Negative (TN): Correctly predicted negative.
+    False Positive (FP): Incorrectly predicted positive (Type I error).
+    False Negative (FN): Incorrectly predicted negative (Type II error). 
+</p>
+
+<p>
+    For classification problems, the most common metrics are:
+    <table>
+        <thead>
+            <th>Metric</th>
+            <th>Description</th>
+        </thead>
+        <tr>
+            <td>Accuracy</td>
+            <td>The accuracy is the percentage of correct predictions over the total number of predictions.
+                (true positives + true negatives) / (true positives + true negatives + false positives + false negatives)
+
+                This metric is not very informative when the classes are imbalanced. 
+                For example, if you have a dataset with 1000 samples, 990 are negative and 10 are positive, 
+                the accuracy will be 99%, but the model is not very good at predicting the positive class.
+                So this metric is useful when the classes are balanced and all of them are important
+
+                Use when: Classes are balanced and false positives/negatives are equally costly.
+            </td>
+        </tr>
+        <tr>
+            <td>Precision</td>
+            <td>
+                The precision is the percentage of true positive predictions over the total number of positive predictions
+                (true positives)/(true positives + false positives).
+
+                It is a measure of the model's ability to avoid false positives.
+                Example: If you are predicting spam emails, you want to avoid false positives, so you want to maximize the precision.
+                Use when: When false positives are very costly
+            </td>
+        </tr>
+        <tr>
+            <td>Recall</td>
+            <td>
+                The recall is the percentage of true positive predictions over the total number of actual positive cases.
+                From all the actual positive cases, how many did the model predict correctly?
+                (true positives)/(true positives + false negatives).
+                Example: If you are predicting a patient with a disease, you want to avoid false negatives, so you want to maximize the recall.
+                Use when: When false negatives are very costly
+            </td>
+        </tr>
+
+        <tr>
+            <td>F1 Score</td>
+            <td>
+                The harmonic mean of precision and recall. Balancing both metrics.
+                2x(precision x recall)/(precision + recall)
+                It is important because it balances both metrics, and it is a good metric to use when the classes are imbalanced because it penalizes both false positives and false negatives.
+                Example: If you are predicting a patient with a disease, you want to avoid both false positives and false negatives, so you want to maximize the F1 Score.
+                use when: both false positives and false negatives are very costly
+            </td>
+        </tr>
+    </table>
+</p>
