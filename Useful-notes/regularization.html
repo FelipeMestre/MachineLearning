@@ -1,0 +1,62 @@
+<h1>Regularization</h1>
+<p>
+    Regularization is a technique to make models generalize better. It is a response to overfitting that occurs when a model is flexible, has 
+    many layers, many polinomial degrees and it learns the training data too well, so it does not generalize well to new data.
+
+    A measure of when to use regularization is that the model has high variance: low error on the training set and high error on the test set.
+    Also it is useful when there is little data available to train the model, or the model is big, so regularization is used to prevent overfitting
+    and it is regulated by tweaking the lambda (a hyperparameter) to find the best balance between bias and variance.
+
+    Regularization adds an extra term to the loss function that penalizes the model for having large weights, so the model gets 
+    simpler and generalizes better although it may add error to the model when training on the training set.
+</p>
+
+<h2>L1 Regularization</h2>
+<p>
+    The l1 regularization makes a model have more zero weights, avoiding overfitting by reducing the number of features used by the model.
+    When used in neural networks, it generates a sparse model, a model that has zero weights making strong features more important than weak features,
+    generating regularization.
+
+    The loss function becomes:
+    J(θ) = J(θ) + λ * sum(abs(θ))
+
+    As the error is bigger, when the gradient descent updates the weights, they will be smaller, so the model will have smaller weights.
+
+    The data should be scaled when using lasso regularization, because it is sensitive to the scale of the data. Otherwise, 
+    the technique will be biased towards the features with the largest scale.
+
+    Use when:
+    There are many features and you suspect that several are irrelevant or noise, and you want the model to make a kind of variable selection.
+    It is common in high dimension problems (for example, many text features, genetics, sensors) where you want a sparse model (with many weights exactly in zero) and more interpretable: you can see which features remained “on” and which ones were turned off.
+    It is also useful when you have few data and many variables, and you need the model to be very aggressive discarding things.
+    
+</p>
+
+<h2>L2 Regularization</h2>
+<p>
+    The l2 regularization is a technique that makes a layer of a neural network or a model have smaller weights in a smooth way,
+    the l1 regularization generates some zero weights instead.
+
+    It works by adding a penalty term to the loss function, si makes errors larger when the weights are larger, making the model more conservative.
+
+    It introduces a new hyperparameter called lambda (λ) that controls the strength of the regularization, 
+    a value of 0 means no regularization, a value of 1 means full regularization.
+
+    The loss function becomes:
+    J(θ) = J(θ) + λ * sum(θ^2)
+
+    As the error is bigger, when the gradient descent updates the weights, they will be smaller, so the model will have smaller weights.
+    This generates less sensitivity to the training data, the technique also distributes the responsibility of the model to the different features.
+
+
+    The data should be scaled when using ridge regularization, because it is sensitive to the scale of the data. Otherwise, 
+    the technique will be biased towards the features with the largest scale.
+
+    Use when:
+    It is almost a default setting in many models: linear/logistic regression, support vector machines, neural networks, etc.
+    It is ideal when you are worried about the stability of the model, the collinearity between variables 
+    (features very correlated) and the risk of huge weights that make the model very sensitive to noise.
+    L2 does not force many weights to zero, but keeps them reasonably small, which usually improves generalization 
+    without making variable selection as strong as L1; that is why it is the standard option in deep learning to control overfitting 
+    and avoid weight explosion.
+</p>
