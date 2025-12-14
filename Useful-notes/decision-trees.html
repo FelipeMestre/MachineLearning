@@ -1,0 +1,98 @@
+<h1>Decision Trees</h1>
+
+<p>
+    Decision trees are versitile models that can be used for either classification or regression tasks. They can event output multiple classes.
+    Their biggest advantage is that they are easy to understand by humans. The random forest model is a collection of decision trees, 
+    and the algorith that is used to train them is called the CART algorithm.
+</p>
+
+<p>
+    The trees work as a set of if-then rules, each rule is a decision node that splits the data into two or more subsets.
+    The leaves of the tree are the final predictions. Each node is a test of an attribute value.
+
+    Depth 0 is the root node, depth 1 is the first level of the tree, and so on.
+    One of the advantages of the trees is that they need barely any preprocessing of the data, they can handle categorical and numerical data,
+</p>
+
+
+<p>
+    A node’s samples attribute counts how many training instances it applies to
+    A node’s value attribute tells you how many training instances of each class this node applies to
+    a node’s gini attribute measures its Gini impurity: a node is “pure” (gini=0) if all training instances it applies to belong to the same class
+
+    CART algorithm produces binary trees: non-leaf nodes always have two children (2 for classification, 1 for regression).
+
+    Max-depth is a hyperparameter that limits the depth of the tree, it is used to prevent overfitting because it stops the algorithm
+    from making more and more splits that do not improve the model.
+
+    A tree is considered an example of a white-box model because it is easy to understand by humans, and decisions can be traced back to the data.
+    In black box models, like neural networks, the decisions it is difficult to explain why de model made a decision (if recognized a face,
+    was it because of the eyes, the nose, the mouth, etc.).
+</p>
+
+<p>
+    To retrieve a class for an instance, it finds the leaf node that applies to it and returns the class that has more instances assigned to the leaf.
+</p>
+
+<h2>The CART Training Algorithm</h2>
+
+<p>
+    Clasification and Regression Tree.
+    The algorith works by recursively finding the best split for the data.
+    So it splits the data into two subsets, on the feature k and the threshold t_k, it chooses k and t_k to minimize the impurity of the two subsets.
+    It stops splitting the data when the max depth is reached, or when the impurity is 0.
+    Adittional stopping conditions are: min_samples_split, min_samples_leaf, min_weight_fraction_leaf, max_leaf_nodes.
+</p>
+
+<p>
+    the CART algorithm is a greedy algorithm: it greedily searches for an optimum split at the top level, 
+    then repeats the process at each subsequent level. It does not check whether or not the split will lead to the lowest possible 
+    impurity several levels down. A greedy algorithm often produces a solution that’s reasonably good but not guaranteed to be optimal. 
+    Unfortunately, finding the optimal tree is known to be an NP-complete problem.⁠ It requires O(exp(m)) time, making the problem 
+    intractable even for small training sets. This is why we must settle for a “reasonably good” solution when training decision trees.
+
+    Predictions cost is O(log(m)) because each prediction requires going through a maximum of log(m) nodes.
+</p>
+
+<p>
+    Gini impurity and entropy are two measures of impurity.
+    Gini impurity tends to isolate the most frequent class in its own branch of the tree, 
+    while entropy tends to produce slightly more balanced trees. But gini is faster to compute so it is the default
+</p>
+
+<p>
+    Decision trees make almost none assumptions about data, not like linear models that assume a linear relationship between the features and the target.
+    If the algorithm is left unconstrained, it will overfit the training data strongly.
+
+    There algorithms that first train the model without parameters and then prune the tree according to a score function.
+    Standard statistical tests, such as the χ 2 test (chi-squared test), are used to estimate the probability 
+    that the improvement is purely the result of chance. If
+    this probability, called the p-value, is higher than a given threshold (typically 5%,
+    controlled by a hyperparameter), then the node is considered unnecessary and its children
+    are deleted. The pruning continues until all unnecessary nodes have been pruned
+</p>
+
+<h3>
+    Regression Trees
+</h3>
+
+<p>
+    Regression trees are used to predict a continuous outcome based on one or more input features.
+    The CART algorithm works exactly the same way as for classification trees, but it uses a different impurity measure:
+    Instead of trying to split the training set in a way that minimizes the impurity, it tries to split the training set
+    in a way that minimizes the MSE (Mean Squared Error) of the target values.
+
+    The values of the leaves are the average of the target values of the training instances associated with the leaf.
+</p>
+
+<p>
+    Decision trees have limitations: They love orthogonal decision boundaries, so they are not good at modeling complex shapes. One way 
+    to overcome the generalization limitation is to use PCA to reduce the dimensionality of the data, that is like rotating the 
+    data to find the best axis to fit orthogonal decision boundaries, that not always helps de decision tree.
+</p>
+
+<p>
+    The decission trees have a high variance, even a tree trained with the same data than other would not be equal since the algorithm is stochastic.
+    To reduce the variance, a common practice is to train the model several times with different random seeds and then average the predictions.
+    This is called the bootstrap aggregation, or bagging for short. Or making an ensemble of trees, each tree is trained on a different subset of the data.
+</p>
