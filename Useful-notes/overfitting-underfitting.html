@@ -1,0 +1,58 @@
+<h1>Overfitting vs Underfitting</h1>
+
+<p>
+    They are two exmaples of a bad educated model. One is when the model is too simple to model the data complexity, 
+    and the other is when the model is too complex, so it perfectly fits the training dataset but it does not gets the pattern of the solutions
+</p>
+
+<h2>Underfitting</h2>
+<p>
+    If you try to match a x^2 function with a linear function, you will get an underfitting model. Because a line cannot model a curve, no matter how
+    many iterations you run the model.
+    That is the most clear example of underfitting. In these cases, the models accuracy will be low with the training dataset and the test dataset,
+    so it is pretty easy to identify.
+    The resulting models will have a high bias and a low variance. This means that the point will be far from the "curve" (if visualizing 2D)
+    of the function you are trying to model.
+
+    <h3>Solutions</h3>
+    <ul>
+        <li>
+            Use a more complex model or architecture
+        </li>
+        <li>
+            Train the model for more iterations
+        </li>
+        <li>
+            Add more features to the data or transform the data in a better way. Imagine you are trying to predict the price of a house,
+            based only in the area of the house, you will get an underfitting model. Because the price of a house is not only dependent on the area,
+            but also on the number of rooms, the number of bathrooms, the number of floors, the year of construction, the location, the condition of the house, etc.
+        </li>
+    </ul>
+</p>
+
+<h2>Overfitting</h2>
+<p>
+    This one i believe is more common than underfitting, or at least it is harder to identify. During training, the model will have an outstanding
+    performance in the training dataset, but it will not perform well in the test or validation dataset. The resulting model will have a low bias and a high variance.
+
+    Conceptually, it is an exchange between memorizing the dataset and learning patterns. For example, a sequence of random numbers like
+    [2, 9, 3, 67, 38, 342, 34, 21] can be memorized, but if the sequence is [20, 18, 16, 14, 12, 10, 8, 6, 4, 2] it can also be memorized, but it is 
+    less efficient than learning the pattern of the sequence, the second one is a decreasing sequence of even numbers, so you only have to know
+    the pattern and the number it starts to get the rest of the sequence.
+
+    <h3>Solutions</h3>
+    <ul>
+        <li>
+            Get more data and feed it to the model until the validation error reaches the training error
+        </li>
+        <li>
+            Check how the training dataset is distributed, if it is not distributed evenly, you may be overfitting.
+        </li>
+        <li>
+            Simplify the model or architecture
+        </li>
+        <li>
+            Use techniques to prevent overfitting like regularization, dropout, early stopping, normalization,etc.
+        </li>
+    </ul>
+</p>
