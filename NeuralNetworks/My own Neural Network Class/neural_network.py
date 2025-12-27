@@ -72,7 +72,7 @@ class NeuralNetwork:
             dbg.array("Y (targets)", targets)
             dbg.array("A_L (outputs)", self.output_layer.layer_outputs)
 
-        error = self.output_layer.backward(targets)
+        gradients = self.output_layer.backward(targets)
 
         if dbg is not None:
             dbg.array("Z_L (pre-activation)", self.output_layer.layer_activations)
@@ -84,7 +84,7 @@ class NeuralNetwork:
         # hidden layers: recorremos de atrás hacia delante
         total_hidden = len(self.hidden_layers)
         for k, hidden_layer in enumerate(reversed(self.hidden_layers), start=1):
-            incoming = error
+            incoming = gradients
             if dbg is not None:
                 layer_index = total_hidden - k + 1
                 dbg.title(f"BACKWARD (debug): hidden layer {layer_index}")
@@ -93,7 +93,7 @@ class NeuralNetwork:
                 dbg.array("A (activation)", hidden_layer.layer_outputs)
                 dbg.array("dA_next (incoming gradient)", incoming)
 
-            error = hidden_layer.backward(incoming)
+            gradients = hidden_layer.backward(incoming)
 
             if dbg is not None:
                 dbg.array("dZ (output_gradients)", hidden_layer.output_gradients)
@@ -101,7 +101,7 @@ class NeuralNetwork:
                 dbg.array("db (bias_gradients)", hidden_layer.bias_gradients)
                 dbg.array("dA_prev (previous_layer_gradients)", hidden_layer.previous_layer_gradients)
 
-        return error
+        return gradients
 
     def update_weights(self, learning_rate):
         for hidden_layer in self.hidden_layers:
@@ -117,8 +117,7 @@ class NeuralNetwork:
                 batch_targets_batch = targets[i:i+batch_size]
                 # output shape(batch_size, possible_classes)
                 output = self.forward(batch_inputs_batch)
-                # loss (solo informativa); el backward necesita los targets, no la loss
-                _ = categorical_crossentropy(batch_targets_batch, output).mean()
+                
                 self.backward(batch_targets_batch, debug=debug_one_backward_step)
                 self.update_weights(learning_rate)
                 if debug_one_backward_step:
