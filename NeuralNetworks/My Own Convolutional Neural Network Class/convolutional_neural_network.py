@@ -548,11 +548,23 @@ if __name__ == "__main__":
             kernel_height=3,
             activation="rectified_linear_unit",
         )
+        convolutional_neural_network.add_convolutional_layer(
+            input_channels=1,
+            input_width=28,
+            input_height=28,
+            number_of_filters=16,
+            padding="same",
+            stride=1,
+            dilation=1,
+            kernel_width=5,
+            kernel_height=5,
+            activation="rectified_linear_unit",
+        )
         convolutional_neural_network.add_global_average_pooling()
         convolutional_neural_network.add_output_layer(number_of_classes=number_of_classes)
 
-        number_of_epochs = 3
-        learning_rate = 0.01
+        number_of_epochs = 10
+        learning_rate = 0.05
 
         for epoch_index in range(number_of_epochs):
             permutation = np.random.permutation(training_images.shape[0])
