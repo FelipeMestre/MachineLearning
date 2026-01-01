@@ -6,6 +6,8 @@ except ImportError:  # permite importar el archivo aunque no esté TensorFlow in
     tf = None
     mnist = None
 
+from matrix_debugger import _MatrixDebugger
+
 def tanh(x):
     return np.tanh(x)
 
@@ -55,29 +57,71 @@ class NeuralNetwork:
             previous_layer_activations = hidden_layer.forward(previous_layer_activations)
         return self.output_layer.forward(previous_layer_activations)
 
-    def backward(self, targets: np.ndarray) -> np.ndarray:
-        error = self.output_layer.backward(targets)
-        for hidden_layer in reversed(self.hidden_layers):
-            error = hidden_layer.backward(error)
-        return error
+    def backward(
+        self,
+        targets: np.ndarray,
+        debug: bool = False,
+        debug_max_rows: int = 8,
+        debug_max_cols: int = 10,
+        debug_precision: int = 4,
+    ) -> np.ndarray:
+        dbg = _MatrixDebugger(max_rows=debug_max_rows, max_cols=debug_max_cols, precision=debug_precision) if debug else None
+
+        if dbg is not None:
+            dbg.title("BACKWARD (debug): capa de salida")
+            dbg.array("Y (targets)", targets)
+            dbg.array("A_L (outputs)", self.output_layer.layer_outputs)
+
+        gradients = self.output_layer.backward(targets)
+
+        if dbg is not None:
+            dbg.array("Z_L (pre-activation)", self.output_layer.layer_activations)
+            dbg.array("dZ_L (output_gradients)", self.output_layer.output_gradients)
+            dbg.array("dW_L (weights_gradients)", self.output_layer.weights_gradients)
+            dbg.array("db_L (bias_gradients)", self.output_layer.bias_gradients)
+            dbg.array("dA_{L-1} (previous_layer_gradients)", self.output_layer.previous_layer_gradients)
+
+        # hidden layers: recorremos de atrás hacia delante
+        total_hidden = len(self.hidden_layers)
+        for k, hidden_layer in enumerate(reversed(self.hidden_layers), start=1):
+            incoming = gradients
+            if dbg is not None:
+                layer_index = total_hidden - k + 1
+                dbg.title(f"BACKWARD (debug): hidden layer {layer_index}")
+                dbg.array("A_prev (cached)", hidden_layer.previous_layer_activations)
+                dbg.array("Z (pre-activation)", hidden_layer.layer_activations)
+                dbg.array("A (activation)", hidden_layer.layer_outputs)
+                dbg.array("dA_next (incoming gradient)", incoming)
+
+            gradients = hidden_layer.backward(incoming)
+
+            if dbg is not None:
+                dbg.array("dZ (output_gradients)", hidden_layer.output_gradients)
+                dbg.array("dW (weights_gradients)", hidden_layer.weights_gradients)
+                dbg.array("db (bias_gradients)", hidden_layer.bias_gradients)
+                dbg.array("dA_prev (previous_layer_gradients)", hidden_layer.previous_layer_gradients)
+
+        return gradients
 
     def update_weights(self, learning_rate):
         for hidden_layer in self.hidden_layers:
             hidden_layer.update_weights(learning_rate)
         self.output_layer.update_weights(learning_rate)
 
-    def train(self, inputs, targets, epochs, learning_rate, batch_size):
+    def train(self, inputs, targets, epochs, learning_rate, batch_size, debug_one_backward_step: bool = False):
         quantity_of_samples = inputs.shape[0]
         for epoch in range(epochs):
             print(f"Epoch {epoch+1}/{epochs}")
             for i in range(0, quantity_of_samples, batch_size):
                 batch_inputs_batch = inputs[i:i+batch_size]
                 batch_targets_batch = targets[i:i+batch_size]
+                # output shape(batch_size, possible_classes)
                 output = self.forward(batch_inputs_batch)
-                # loss (solo informativa); el backward necesita los targets, no la loss
-                _ = categorical_crossentropy(batch_targets_batch, output).mean()
-                self.backward(batch_targets_batch)
+                
+                self.backward(batch_targets_batch, debug=debug_one_backward_step)
                 self.update_weights(learning_rate)
+                if debug_one_backward_step:
+                    debug_one_backward_step = False
 
     def evaluate(self, inputs, targets):
         predictions = self.forward(inputs)
@@ -157,11 +201,17 @@ class OutputLayer(Layer):
                 f"Si tus targets son índices (m,), usa dZ = A; dZ[i, y_i] -= 1."
             )
         quantity_of_samples = targets.shape[0]
+
+        #dLoss/dpre_activation
         self.output_gradients = self.layer_outputs - targets
 
+        #dLoss/dWeights
         self.weights_gradients = np.dot(self.previous_layer_activations.T, self.output_gradients) / quantity_of_samples
+        
+        #dLoss/dBias
         self.bias_gradients = np.sum(self.output_gradients, axis=0) / quantity_of_samples
 
+        #dloss/dPrev_activations
         self.previous_layer_gradients = np.dot(self.output_gradients, self.weights.T)
         return self.previous_layer_gradients
 
@@ -185,7 +235,7 @@ if __name__ == "__main__":
     y_train = tf.keras.utils.to_categorical(y_train, output_layer_size)
     y_test = tf.keras.utils.to_categorical(y_test, output_layer_size)
 
-    neural_network.train(x_train, y_train, epochs=10, learning_rate=0.01, batch_size=32)
+    neural_network.train(x_train, y_train, epochs=10, learning_rate=0.01, batch_size=32, debug_one_backward_step=True)
 
     accuracy = neural_network.evaluate(x_test, y_test)
     print(f"Accuracy: {accuracy}")
