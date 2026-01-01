@@ -48,8 +48,39 @@ class _MatrixDebugger:
             if a.shape[0] > r or a.shape[1] > c:
                 suffix = f"  (mostrando 0:{r}, 0:{c})"
             return view, suffix
-        # para tensores >2D mostramos solo shape
-        return a, "  (tensor >2D: mostrado sin truncado)"
+        # Tensores >2D: mostramos una vista pequeña para evitar inundar la salida.
+        # Casos comunes:
+        # - (batch_size, height, width, channels)  -> fijamos batch=0 y recortamos height/width/canales.
+        # - (height, width, channels)             -> recortamos height/width/canales.
+        if a.ndim == 3:
+            r = min(self.max_rows, a.shape[0])
+            c = min(self.max_cols, a.shape[1])
+            k = min(3, a.shape[2])
+            view = a[:r, :c, :k]
+            suffix = ""
+            if a.shape[0] > r or a.shape[1] > c or a.shape[2] > k:
+                suffix = f"  (mostrando 0:{r}, 0:{c}, 0:{k})"
+            return view, suffix
+
+        if a.ndim == 4:
+            r = min(self.max_rows, a.shape[1])
+            c = min(self.max_cols, a.shape[2])
+            k = min(3, a.shape[3])
+            view = a[0, :r, :c, :k]
+            suffix = ""
+            if a.shape[0] > 1 or a.shape[1] > r or a.shape[2] > c or a.shape[3] > k:
+                suffix = f"  (mostrando batch=0, 0:{r}, 0:{c}, 0:{k})"
+            return view, suffix
+
+        # Fallback genérico: fijamos a 0 todas las dimensiones excepto las dos últimas.
+        r = min(self.max_rows, a.shape[-2])
+        c = min(self.max_cols, a.shape[-1])
+        leading_index = (0,) * (a.ndim - 2)
+        view = a[leading_index + (slice(0, r), slice(0, c))]
+        suffix = ""
+        if a.shape[-2] > r or a.shape[-1] > c or any(dim > 1 for dim in a.shape[:-2]):
+            suffix = f"  (mostrando indices iniciales, 0:{r}, 0:{c})"
+        return view, suffix
 
     def array(self, name: str, a: np.ndarray) -> None:
         if a is None:
@@ -70,7 +101,7 @@ class _MatrixDebugger:
             stats = ""
 
         try:
-            if isinstance(view, np.ndarray) and view.ndim <= 2:
+            if isinstance(view, np.ndarray) and view.ndim <= 3:
                 body = np.array2string(
                     view,
                     precision=self.precision,
@@ -86,3 +117,7 @@ class _MatrixDebugger:
             self._emit(f"[bold]{name}[/bold] shape={shape}{stats}{suffix}\n{body}\n")
         else:
             self._emit(f"{name} shape={shape}{stats}{suffix}\n{body}\n")
+
+
+# Alias público (sin guion bajo) para usarlo desde otros módulos sin “clase privada”.
+MatrixDebugger = _MatrixDebugger
