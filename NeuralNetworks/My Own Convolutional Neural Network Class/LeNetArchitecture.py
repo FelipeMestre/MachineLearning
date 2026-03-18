@@ -278,7 +278,7 @@ if __name__ == "__main__":
     lenet5_model = LeNet5(batch_size=batch_size)
 
     number_of_epochs = 10
-    learning_rate = 0.001
+    learning_rate = 0.01
     maximum_training_samples = 5000
     maximum_test_samples = 5000
 
@@ -298,4 +298,3 @@ if __name__ == "__main__":
             maximum_test_samples=maximum_test_samples,
         )
         print(f"Epoch {epoch_index + 1}/{number_of_epochs} - accuracy: {accuracy:.4f}")
-
